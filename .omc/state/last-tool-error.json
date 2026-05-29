@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"node_modules/.bin/vitest run --reporter=verbose 2>&1\",\"description\":\"运行测试\"}",
+  "error": "Exit code 1\n\n RUN  v2.1.9 /Users/starfie1d/GitHub/rival-rating\n\n ✓ src/prism/zscore.test.ts > zScoreAll > 标准化后均值≈0、标准差≈1\n ✓ src/prism/zscore.test.ts > zScoreAll > 全相同值返回全 0\n ✓ src/prism/zscore.test.ts > zScoreAll > 单个元素返回 [0]\n ✓ src/prism/zscore.test.ts > coldStartShrink > n=0 时完全收缩到 0\n ✓ src/prism/zscore.test.ts > coldStartShrink > n>>k 时几乎不收缩\n ✓ src/prism/zscore.test.ts > coldStartShrink > n=k 时收缩一半\n ✓ src/prism/zscore.test.ts > coldStartShrink > k=0 时不收缩\n ✓ src/prism/zscore.test.ts > normalCD...",
+  "timestamp": "2026-05-29T09:08:27.435Z",
+  "retry_count": 2
+}
