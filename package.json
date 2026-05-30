@@ -4,7 +4,8 @@
   "description": "RR (Rival Rating) scalar engine + PRISM eight-dimension radar",
   "type": "module",
   "exports": {
-    ".": "./src/index.ts"
+    ".": "./src/index.ts",
+    "./weights/*": "./src/weights/*"
   },
   "scripts": {
     "test": "vitest run",
