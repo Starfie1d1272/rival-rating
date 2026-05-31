@@ -1,0 +1,77 @@
+{
+  "version": "rr-value-accounts-v2-lite-0.1",
+  "description": "价值账户 RR 模型 v1-lite。权重为凭游戏理解的未校准先验，仅供管道跑通与相对排序；绝对刻度由联赛锚定提供。Objective 权重刻意压低（下包者常只是战术链末端）。Combat 的 buyDelta/manState 乘子在 analysis 仓库填充对应分桶后才生效，未填则降级为 1.0。",
+
+  "intercept": 0.5,
+
+  "accountWeights": {
+    "_comment": "五账户相对权重，体现游戏理解：Combat 主导，Objective 最低（噪声大）。",
+    "combat": 1.0,
+    "trade": 0.5,
+    "clutch": 0.4,
+    "objective": 0.1,
+    "utility": 0.3
+  },
+
+  "combat": {
+    "_comment": "killWeight 作用于 KPR；deathWeight 作用于 DPR（负）；damageWeight 作用于有效伤害/round。",
+    "killWeight": 0.55,
+    "deathWeight": -0.35,
+    "damageWeight": 0.003,
+    "openingWeight": 0.3,
+    "multiKillWeight": 0.4,
+    "headshotWeight": 0.0,
+    "wallbangWeight": 0.05,
+    "buyDelta": {
+      "_comment": "以弱打强加权，以强凌弱降权；analysis 填 killsByBuyDelta 后生效。",
+      "disadvantageMultiplier": 1.35,
+      "advantageMultiplier": 0.8
+    },
+    "manState": {
+      "_comment": "人数劣势击杀加权，人数优势击杀降权；analysis 填 killsByManState 后生效。",
+      "manDownMultiplier": 1.2,
+      "manUpMultiplier": 0.9
+    }
+  },
+
+  "trade": {
+    "tradeKillWeight": 0.6,
+    "tradedDeathWeight": 0.3,
+    "untradedDeathPenalty": -0.25
+  },
+
+  "clutch": {
+    "_comment": "expectation = 各局面静态获胜期望；净超额 = Σ(won − count·expectation)。",
+    "expectation": {
+      "vsOne": 0.5,
+      "vsTwo": 0.25,
+      "vsThree": 0.1,
+      "vsFour": 0.04,
+      "vsFive": 0.01
+    },
+    "winValueWeight": 1.0
+  },
+
+  "objective": {
+    "plantWeight": 0.2,
+    "defuseWeight": 0.3,
+    "plantConvertedBonus": 0.2
+  },
+
+  "utility": {
+    "flashAssistWeight": 0.4,
+    "enemyFlashSecWeight": 0.05,
+    "teamFlashPenalty": -0.05,
+    "utilityDamageWeight": 0.004
+  },
+
+  "clamp": {
+    "min": 0.1,
+    "max": 3.0
+  },
+
+  "anchor": {
+    "mode": "league_mean",
+    "note": "1.00 = 本赛季联赛均值。所有选手 RR 原始分算完后，整体乘 (1.0 / mean) 完成锚定。"
+  }
+}

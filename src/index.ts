@@ -8,6 +8,24 @@
 export type { RRIndicators } from "./types/indicators.js";
 export type { RRWeights, RRResult, RRAnchor, RREcoMultipliers } from "./types/rr.js";
 export type {
+  AccountSignalsV2,
+  CombatSignals,
+  TradeSignals,
+  ClutchSignals,
+  ObjectiveSignals,
+  UtilitySignals,
+  RRAccountKey,
+  RRResultV2,
+  ValueAccountsWeights,
+  CombatWeights,
+  TradeWeights,
+  ClutchWeights,
+  ObjectiveWeights,
+  UtilityWeights,
+  RRModel,
+} from "./types/accounts.js";
+export { RR_ACCOUNTS } from "./types/accounts.js";
+export type {
   PrismWeights,
   PrismAxisKey,
   PrismAxisConfig,
@@ -19,6 +37,14 @@ export { PRISM_AXES, PRISM_AXIS_ORDER } from "./types/prism.js";
 
 // ─── RR 标量 ──────────────────────────────────────────────────────────────
 export { computeRR, computeLeagueMean } from "./rr/compute.js";
+
+// ─── RR v2：价值账户模型 + 可插拔 RRModel ─────────────────────────────────
+export {
+  computeValueAccountsRR,
+  computeLeagueMeanV2,
+  valueAccountsV2LiteModel,
+} from "./rr/models/value-accounts-v2-lite.js";
+export { hltvLinearV1Model } from "./rr/models/hltv-linear-v1.js";
 
 // ─── PRISM 画像 ───────────────────────────────────────────────────────────
 export { computePrism, rrToPercentile } from "./prism/compute.js";
@@ -33,4 +59,5 @@ export { extractAxisScore } from "./prism/extract.js";
 // JSON 内含 `_comment`/`_desc` 等注释字段,故保持裸导出由调用方断言,
 // 不在此处强标 RRWeights/PrismWeights（避免 anchor.mode 等 union 收窄摩擦）。
 export { default as rrWeightsV1 } from "./weights/rr-v1.json" with { type: "json" };
+export { default as rrValueAccountsV2Lite } from "./weights/rr-value-accounts-v2-lite.json" with { type: "json" };
 export { default as prismWeightsV1 } from "./weights/prism-v1.json" with { type: "json" };
