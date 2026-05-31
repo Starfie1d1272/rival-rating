@@ -112,9 +112,24 @@ export interface RRIndicators {
   utilityDamagePerRound: number;
   flashAssistCount: number;
   flashAssistPerRound: number;
-  /** 致盲敌方总秒数 */
+  /**
+   * 致盲敌方总秒数（从 blinds.json 聚合，v1 数据源）
+   * v2 起可直接用 enemyFlashDurationSeconds 替代
+   */
   blindDurationTotal: number;
   blindDurationPerRound: number;
+  /**
+   * 致盲敌方总秒数（来自 playerStats v2 直接字段，比聚合更准）
+   * null — 等 cs2-demo-exporter v2 产出后填入；激活前权重设 0
+   */
+  enemyFlashDurationSeconds: number | null;
+  enemyFlashDurationPerRound: number | null;
+  /**
+   * 致盲己方队友总秒数（负向风险信号）
+   * null — 等 cs2-demo-exporter v2 产出后填入；激活前权重设 0
+   */
+  teamFlashDurationSeconds: number | null;
+  teamFlashDurationPerRound: number | null;
   grenadeCount: number;
   grenadeCountPerRound: number;
 
@@ -127,6 +142,23 @@ export interface RRIndicators {
   pistolRoundCount: number;
   /** 该图全程平均装备价值 */
   avgEquipmentValue: number;
+
+  // ─── 死亡原因分类（v2 playerStats 新增）──────────────────────────────
+  /**
+   * 被击杀死亡回合数（不含炸弹/跌落）
+   * null — 等 cs2-demo-exporter v2 产出后填入；激活前权重设 0
+   */
+  combatDeathCount: number | null;
+  /**
+   * 被炸弹炸死回合数（说明位置/旋转失误，survival 轴负向信号）
+   * null — 等 cs2-demo-exporter v2 产出后填入；激活前权重设 0
+   */
+  bombDeathCount: number | null;
+  /**
+   * 穿墙击杀数（锐利度风格标签）
+   * null — 等 cs2-demo-exporter v2 产出后填入；激活前权重设 0
+   */
+  wallbangKillCount: number | null;
 
   // ─── Layer 2 占位（数据量 ~1000 张图后再填）──────────────────────────
   /** Σ ΔP(round win) per kill，即 Round Swing 总分 */

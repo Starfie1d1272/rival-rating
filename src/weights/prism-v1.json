@@ -61,11 +61,13 @@
       "_desc": "活下来/低死亡率。α=0.20 近乎纯水平：强弱直接体现，不掺风格。",
       "alpha": 0.20,
       "involvement": [
-        { "signal": "kast",         "weight": 1.0 }
+        { "signal": "kast",           "weight": 1.0 },
+        { "signal": "bombDeathCount", "weight": 0.00, "_note": "v2占位，激活时为负向信号（被炸死=位置失误）" }
       ],
       "efficiency": [
-        { "signal": "survivalRate", "weight": 0.60 },
-        { "signal": "kast",         "weight": 0.40 }
+        { "signal": "survivalRate",   "weight": 0.60 },
+        { "signal": "kast",           "weight": 0.40 },
+        { "signal": "combatDeathCount","weight": 0.00, "_note": "v2占位" }
       ]
     },
 
@@ -73,14 +75,17 @@
       "_desc": "投掷物贡献。α=0.70 偏风格：勤投弹 + 高效致盲/伤害双重体现。",
       "alpha": 0.70,
       "involvement": [
-        { "signal": "grenadeCountPerRound",    "weight": 0.40 },
-        { "signal": "utilityDamagePerRound",   "weight": 0.30 },
-        { "signal": "flashAssistPerRound",     "weight": 0.30 }
+        { "signal": "grenadeCountPerRound",        "weight": 0.40 },
+        { "signal": "utilityDamagePerRound",       "weight": 0.30 },
+        { "signal": "flashAssistPerRound",         "weight": 0.30 },
+        { "signal": "enemyFlashDurationPerRound",  "weight": 0.00, "_note": "v2占位，激活时分摊 blindDurationPerRound 的权重" },
+        { "signal": "teamFlashDurationPerRound",   "weight": 0.00, "_note": "v2占位，负向信号，激活时用负权重" }
       ],
       "efficiency": [
-        { "signal": "utilityDamagePerRound",   "weight": 0.40 },
-        { "signal": "blindDurationPerRound",   "weight": 0.30 },
-        { "signal": "flashAssistPerRound",     "weight": 0.30 }
+        { "signal": "utilityDamagePerRound",       "weight": 0.40 },
+        { "signal": "blindDurationPerRound",       "weight": 0.30 },
+        { "signal": "flashAssistPerRound",         "weight": 0.30 },
+        { "signal": "enemyFlashDurationPerRound",  "weight": 0.00, "_note": "v2占位，替代 blindDurationPerRound" }
       ]
     },
 
