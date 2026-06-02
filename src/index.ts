@@ -50,6 +50,13 @@ export { hltvLinearV1Model } from "./rr/models/hltv-linear-v1.js";
 export { computeCohortAccountsRR } from "./rr/models/cohort-accounts.js";
 export type { CohortAccountResult, CohortAccountsOptions } from "./rr/models/cohort-accounts.js";
 
+// ─── RR v2：固定职业基准归一化（单 demo 绝对评分，1.0 = 职业平均）─────────
+export {
+  computeFrozenProBaselineRR,
+  computeFrozenProBaselineBatch,
+} from "./rr/models/frozen-pro-baseline.js";
+export type { ProBaselineConfig, ProBaselineAccount } from "./rr/models/frozen-pro-baseline.js";
+
 // ─── PRISM 画像 ───────────────────────────────────────────────────────────
 export { computePrism, rrToPercentile } from "./prism/compute.js";
 export type { PrismComputeInput } from "./prism/compute.js";
