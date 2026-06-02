@@ -46,6 +46,10 @@ export {
 } from "./rr/models/value-accounts-v2-lite.js";
 export { hltvLinearV1Model } from "./rr/models/hltv-linear-v1.js";
 
+// ─── RR v2：cohort 平衡（标准化 + 残差化，赛季/单场通用）──────────────────
+export { computeCohortAccountsRR } from "./rr/models/cohort-accounts.js";
+export type { CohortAccountResult, CohortAccountsOptions } from "./rr/models/cohort-accounts.js";
+
 // ─── PRISM 画像 ───────────────────────────────────────────────────────────
 export { computePrism, rrToPercentile } from "./prism/compute.js";
 export type { PrismComputeInput } from "./prism/compute.js";

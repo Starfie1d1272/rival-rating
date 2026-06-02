@@ -66,3 +66,33 @@ Utility:   flashAssist / 致盲敌方秒数 / 致盲队友秒数 / 道具伤害
 - **锚定在调用方做**：`computeValueAccountsRR` 返回的 rr 是锚定前的（同 `computeRR`），调用方跑完所有选手后调 `computeLeagueMeanV2` 算均值，再整体 `× (1/mean)`。
 - **Objective 权重刻意压低**：下包者不一定是回合最大功臣，v1 先做 0.1，防噪声污染分数。
 - **Combat context 分桶未填充时 = 全部降级为乘子 1.0**：analysis 仓库可以先 stub，分数照样产出，后面再补。
+
+## cohort 平衡：标准化 + 残差化（`computeCohortAccountsRR`）
+
+`computeValueAccountsRR` 是**单选手**线性相加，存在一个结构问题：五账户 raw 量级天然差
+~20–40×（combat 每回合发生，clutch/objective 稀有），线性相加里 combat 碾压其余四账户，
+`accountWeight` 先验形同虚设。这需要一群选手（cohort）才能修，故单开
+`computeCohortAccountsRR(signals[], weights, { targetStd })`：
+
+1. 恢复每账户未加权 raw，跨选手 z-score。
+2. combat 作主干；其余账户**残差化**（减去 combat 能解释的部分，只留正交增量），度量
+   "超出 fragging 水平的团队贡献"，避免与 combat 双重计分。
+3. composite = `w_combat·zc + Σ w_a·zr_a`；scale 对齐 `targetStd`（调用方可传 std(rrV1)）；anchor 到 1.0。
+
+赛季 cohort（57 人）用全员；单场用场内 10 人（注意 n=10 时残差回归偏噪声，单场更适合
+直接展示 `computeValueAccountsRR` 的线性快照，canonical Rating 用赛季 cohort）。
+
+### 校准结论（55 场 OCR ratingPro / WE，按 steam64 季级关联）
+
+- 整体评分 ≈ combat：combat 单独 corr(ratingPro)=0.90；ratingPro/WE 本身就是 combat 主导。
+- 非 combat 账户独立信号弱且与 combat 共线（clutch standalone 0.46，与 combat 共线 0.56）。
+- **残差化后，正交团队增量对 ratingPro/WE 的边际预测力 ≈ 0。**
+
+→ **combat 是数据强制的主干；非 combat 的 accountWeight 是刻意的价值选择（识别团队贡献），
+不是数据回归出来的。** 这是"市场（ratingPro/WE）低估团队价值"的明确产品立场，
+代价是 `corr(accountRR, ratingPro)=0.68 < rrV1 的 0.90`——v2 刻意偏离市场排名。
+
+### 不变量原则
+
+Rating（accountRR）**不做按选手场数的冷启动收缩**——它是不变量，照实展示，由读者结合
+`mapCount` 理解可信度。冷启动收缩只用于 PRISM 八维画像（`computePrism`，小样本会把雷达拉满）。
