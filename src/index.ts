@@ -22,6 +22,7 @@ export type {
   ClutchWeights,
   ObjectiveWeights,
   UtilityWeights,
+  CohortAccountWeights,
   RRModel,
 } from "./types/accounts.js";
 export { RR_ACCOUNTS } from "./types/accounts.js";

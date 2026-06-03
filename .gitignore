@@ -1,6 +1,9 @@
 node_modules/
 dist/
 *.tsbuildinfo
+__pycache__/
+*.pyc
 .omc/
 .pnpm-store/
 docs/superpowers/plans/
+.demo-cache/

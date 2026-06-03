@@ -72,12 +72,13 @@ Utility:   flashAssist / 致盲敌方秒数 / 致盲队友秒数 / 道具伤害
 `computeValueAccountsRR` 是**单选手**线性相加，存在一个结构问题：五账户 raw 量级天然差
 ~20–40×（combat 每回合发生，clutch/objective 稀有），线性相加里 combat 碾压其余四账户，
 `accountWeight` 先验形同虚设。这需要一群选手（cohort）才能修，故单开
-`computeCohortAccountsRR(signals[], weights, { targetStd })`：
+`computeCohortAccountsRR(signals[], weights, { targetStd })`。默认 `targetStd` / `epsilon`
+来自 `rr-value-accounts-v2-lite.json` 的 `cohort` 配置，调用方也可临时覆盖：
 
 1. 恢复每账户未加权 raw，跨选手 z-score。
 2. combat 作主干；其余账户**残差化**（减去 combat 能解释的部分，只留正交增量），度量
    "超出 fragging 水平的团队贡献"，避免与 combat 双重计分。
-3. composite = `w_combat·zc + Σ w_a·zr_a`；scale 对齐 `targetStd`（调用方可传 std(rrV1)）；anchor 到 1.0。
+3. composite = `w_combat·zc + Σ w_a·zr_a`；scale 对齐 `cohort.targetStd`（调用方可传 std(rrV1) 覆盖）；anchor 到 1.0。
 
 赛季 cohort（57 人）用全员；单场用场内 10 人（注意 n=10 时残差回归偏噪声，单场更适合
 直接展示 `computeValueAccountsRR` 的线性快照，canonical Rating 用赛季 cohort）。

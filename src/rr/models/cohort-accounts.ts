@@ -36,8 +36,10 @@ export interface CohortAccountResult {
 }
 
 export interface CohortAccountsOptions {
-  /** 目标离散度（accountRR 的 std）。默认 0.2；调用方可传 std(rrV1) 对齐 HLTV 刻度。 */
+  /** 目标离散度（accountRR 的 std）。默认来自 weights.cohort.targetStd。 */
   targetStd?: number;
+  /** 数值稳定阈值。默认来自 weights.cohort.epsilon。 */
+  epsilon?: number;
 }
 
 export function computeCohortAccountsRR(
@@ -48,12 +50,13 @@ export function computeCohortAccountsRR(
   const n = signals.length;
   if (n === 0) return [];
   const w = weights.accountWeights;
+  const epsilon = opts.epsilon ?? weights.cohort.epsilon;
   const results = signals.map((s) => computeValueAccountsRR(s, weights));
 
   // 1. per-account raw（= 加权贡献 / accountWeight），跨选手标准化
   const z = {} as Record<RRAccountKey, number[]>;
   for (const k of RR_ACCOUNTS) {
-    z[k] = standardize(results.map((r) => (w[k] !== 0 ? r.accounts[k] / w[k] : 0)));
+    z[k] = standardize(results.map((r) => (w[k] !== 0 ? r.accounts[k] / w[k] : 0)), epsilon);
   }
 
   // 2. combat 主干；其余账户残差化（正交于 combat）
@@ -62,14 +65,14 @@ export function computeCohortAccountsRR(
   for (const k of RR_ACCOUNTS) {
     if (k === "combat") continue;
     const slope = zc.reduce((acc, v, i) => acc + v * (z[k][i] ?? 0), 0) / n; // 两者已标准化 → 点积/n = 相关
-    used[k] = standardize(z[k].map((v, i) => v - slope * (zc[i] ?? 0)));
+    used[k] = standardize(z[k].map((v, i) => v - slope * (zc[i] ?? 0)), epsilon);
   }
 
   // 3. composite + scale + anchor
   const composite = signals.map((_, i) => RR_ACCOUNTS.reduce((s, k) => s + w[k] * (used[k][i] ?? 0), 0));
-  const targetStd = opts.targetStd ?? 0.2;
+  const targetStd = opts.targetStd ?? weights.cohort.targetStd;
   const compStd = pstd(composite);
-  const scale = compStd > 1e-9 ? targetStd / compStd : 0;
+  const scale = compStd > epsilon ? targetStd / compStd : 0;
 
   return signals.map((sig, i) => {
     const accounts = {} as Record<RRAccountKey, number>;
@@ -94,8 +97,8 @@ function pstd(xs: number[]): number {
   return xs.length ? Math.sqrt(xs.reduce((a, x) => a + (x - m) ** 2, 0) / xs.length) : 0;
 }
 
-function standardize(xs: number[]): number[] {
+function standardize(xs: number[], epsilon: number): number[] {
   const m = mean(xs);
   const s = pstd(xs);
-  return s > 1e-9 ? xs.map((x) => (x - m) / s) : xs.map(() => 0);
+  return s > epsilon ? xs.map((x) => (x - m) / s) : xs.map(() => 0);
 }

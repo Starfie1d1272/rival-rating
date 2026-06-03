@@ -10,10 +10,15 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "demo:download": "node scripts/download-hltv-demos.mjs",
+    "demo:parse": "python3 scripts/awpy-demo-to-analysis.py",
+    "fixture:account": "node scripts/analysis-to-account-fixture.mjs",
+    "fixture:freeze": "UPDATE_ACCOUNT_FIXTURE_EXPECTED=1 vitest run src/rr/models/account-regression-fixtures.test.ts"
   },
   "packageManager": "pnpm@11.0.8",
   "devDependencies": {
+    "@types/node": "^25.9.1",
     "typescript": "^5.4.0",
     "vitest": "^2.0.0"
   }

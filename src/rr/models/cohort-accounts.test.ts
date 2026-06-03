@@ -76,6 +76,22 @@ describe("computeCohortAccountsRR", () => {
     expect(clutchStd).toBeGreaterThan(0);
   });
 
+  it("uses cohort targetStd from weights and allows an explicit override", () => {
+    const cohort = [
+      makePlayer("a", { kills: 180, damage: 20000 }),
+      makePlayer("b", { kills: 150, damage: 17000 }),
+      makePlayer("c", { kills: 130, damage: 15000 }),
+      makePlayer("d", { kills: 110, damage: 13000 }),
+      makePlayer("e", { kills: 95, damage: 11000 }),
+    ];
+
+    const fromWeights = computeCohortAccountsRR(cohort, weights);
+    const overridden = computeCohortAccountsRR(cohort, weights, { targetStd: 0.05 });
+
+    expect(stdev(fromWeights.map((r) => r.rr))).toBeCloseTo(weights.cohort.targetStd, 6);
+    expect(stdev(overridden.map((r) => r.rr))).toBeCloseTo(0.05, 6);
+  });
+
   it("returns empty for empty cohort", () => {
     expect(computeCohortAccountsRR([], weights)).toEqual([]);
   });
