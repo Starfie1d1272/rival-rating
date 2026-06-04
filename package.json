@@ -14,7 +14,8 @@
     "demo:download": "node scripts/download-hltv-demos.mjs",
     "demo:parse": "python3 scripts/awpy-demo-to-analysis.py",
     "fixture:account": "node scripts/analysis-to-account-fixture.mjs",
-    "fixture:freeze": "UPDATE_ACCOUNT_FIXTURE_EXPECTED=1 vitest run src/rr/models/account-regression-fixtures.test.ts"
+    "fixture:freeze": "UPDATE_ACCOUNT_FIXTURE_EXPECTED=1 vitest run src/rr/models/account-regression-fixtures.test.ts",
+    "fit:hltv": "node scripts/fit-hltv-weights.mjs"
   },
   "packageManager": "pnpm@11.0.8",
   "devDependencies": {
