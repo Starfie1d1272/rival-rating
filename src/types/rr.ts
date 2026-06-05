@@ -40,6 +40,8 @@ export interface RREcoMultipliers {
   ecoKillMultiplier: number;
   forceKillMultiplier: number;
   fullBuyKillMultiplier: number;
+  /** 手枪局击杀乘子。 */
+  pistolKillMultiplier: number;
   /**
    * eco 手枪打赢满配的额外奖励乘子
    * 1.0 = 不激活

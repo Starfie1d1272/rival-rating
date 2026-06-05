@@ -181,6 +181,13 @@ export interface UtilityWeights {
   utilityDamageWeight: number;
 }
 
+export interface CohortAccountWeights {
+  /** cohort 平衡后的目标离散度（accountRR 的 std）。 */
+  targetStd: number;
+  /** z-score / 残差化的数值稳定阈值。 */
+  epsilon: number;
+}
+
 export interface ValueAccountsWeights {
   /** 格式：rr-value-accounts-v2-lite-X.Y */
   version: string;
@@ -194,6 +201,8 @@ export interface ValueAccountsWeights {
   clutch: ClutchWeights;
   objective: ObjectiveWeights;
   utility: UtilityWeights;
+  /** cohort 标准化 + 残差化参数。 */
+  cohort: CohortAccountWeights;
   clamp: { min: number; max: number };
   anchor: { mode: "league_mean" | "pro_mean"; note?: string };
 }

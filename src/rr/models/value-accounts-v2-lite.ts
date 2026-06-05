@@ -29,6 +29,7 @@ import type {
   RRResultV2,
   ValueAccountsWeights,
 } from "../../types/accounts.js";
+import valueAccountsWeights from "../../weights/rr-value-accounts-v2-lite.json" with { type: "json" };
 
 /**
  * 计算单名选手单张地图的 value-accounts RR（锚定前）。
@@ -130,7 +131,7 @@ export const valueAccountsV2LiteModel: RRModel<
   RRResultV2
 > = {
   id: "value-accounts-v2-lite",
-  version: "rr-value-accounts-v2-lite-0.1",
+  version: valueAccountsWeights.version,
   inputKind: "account-signals-v2",
   compute: computeValueAccountsRR,
 };

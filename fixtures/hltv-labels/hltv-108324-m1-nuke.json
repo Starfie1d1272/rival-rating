@@ -1,0 +1,59 @@
+{
+  "version": "hltv-labels-v1",
+  "fixtureId": "hltv-108324-m1-nuke",
+  "ratingVersion": "3.0",
+  "sourceUrl": "https://www.hltv.org/matches/2394228/falcons-vs-legacy-cs-asia-championships-2026",
+  "notes": "Seed labels copied from the visible HLTV match stats table for map 1 Nuke. HLTV Rating 3.0 is the currently visible page target.",
+  "labels": [
+    {
+      "steamId64": "76561199032006224",
+      "playerName": "kyousuke",
+      "hltvRating": 1.61
+    },
+    {
+      "steamId64": "76561198074762801",
+      "playerName": "m0NESY",
+      "hltvRating": 1.34
+    },
+    {
+      "steamId64": "76561198041683378",
+      "playerName": "NiKo",
+      "hltvRating": 1.21
+    },
+    {
+      "steamId64": "76561197996678278",
+      "playerName": "TeSeS",
+      "hltvRating": 1.0
+    },
+    {
+      "steamId64": "76561197989430253",
+      "playerName": "karrigan",
+      "hltvRating": 0.68
+    },
+    {
+      "steamId64": "76561198850020186",
+      "playerName": "latto",
+      "hltvRating": 1.34
+    },
+    {
+      "steamId64": "76561198100494962",
+      "playerName": "saadzin",
+      "hltvRating": 0.92
+    },
+    {
+      "steamId64": "76561198061763596",
+      "playerName": "n1ssim",
+      "hltvRating": 0.82
+    },
+    {
+      "steamId64": "76561198043769572",
+      "playerName": "arT",
+      "hltvRating": 0.77
+    },
+    {
+      "steamId64": "76561198194325317",
+      "playerName": "dumau",
+      "hltvRating": 0.7
+    }
+  ]
+}

@@ -47,6 +47,8 @@ export interface ProBaselineConfig {
   /** 必须与计算 raw 时所用的 accountWeights 一致。 */
   accountWeights: Record<RRAccountKey, number>;
   clamp: { min: number; max: number };
+  /** z-score / 残差化的数值稳定阈值。未填时使用 ValueAccountsWeights.cohort.epsilon。 */
+  epsilon?: number;
   /** 全局缩放：std(rrV1) / std(composite)，对齐 HLTV 刻度。 */
   scale: number;
   /** 锚点，固定 1.0 = 职业平均。 */
@@ -67,6 +69,7 @@ export function computeFrozenProBaselineRR(
   baseline: ProBaselineConfig,
 ): CohortAccountResult {
   const w = weights.accountWeights;
+  const epsilon = baseline.epsilon ?? weights.cohort.epsilon;
   const result = computeValueAccountsRR(sig, weights);
 
   // 1. raw → z（用冻结的 mean/std）
@@ -74,7 +77,7 @@ export function computeFrozenProBaselineRR(
   for (const k of RR_ACCOUNTS) {
     const raw = w[k] !== 0 ? result.accounts[k] / w[k] : 0;
     const p = baseline.accounts[k];
-    z[k] = p.std > 1e-9 ? (raw - p.mean) / p.std : 0;
+    z[k] = p.std > epsilon ? (raw - p.mean) / p.std : 0;
   }
 
   // 2. combat 主干；其余账户残差化（用冻结的斜率）
@@ -84,7 +87,7 @@ export function computeFrozenProBaselineRR(
   for (const k of RR_ACCOUNTS) {
     if (k === "combat") continue;
     const slope = baseline.accounts[k].slope;
-    const denom = Math.sqrt(Math.max(1e-9, 1 - slope * slope));
+    const denom = Math.sqrt(Math.max(epsilon, 1 - slope * slope));
     used[k] = (z[k] - slope * zc) / denom;
   }
 

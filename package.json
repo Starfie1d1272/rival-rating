@@ -10,10 +10,23 @@
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "demo:download": "node scripts/download-hltv-demos.mjs",
+    "demo:parse": "python3 scripts/awpy-demo-to-analysis.py",
+    "map-control:web": ".venv/bin/python demo/map-control-web/server.py",
+    "map-control:export": ".venv/bin/python scripts/map-control-export.py",
+    "map-control:cache": ".venv/bin/python scripts/map-control-cache.py",
+    "map-control:cache:all": ".venv/bin/python scripts/map-control-cache.py generate-all",
+    "map-control:awpy:maps": "HOME=\"$PWD/.awpy-home\" .venv/bin/awpy get maps",
+    "map-control:awpy:navs": "HOME=\"$PWD/.awpy-home\" .venv/bin/awpy get navs",
+    "map-control:awpy:tris": "HOME=\"$PWD/.awpy-home\" .venv/bin/awpy get tris",
+    "fixture:account": "node scripts/analysis-to-account-fixture.mjs",
+    "fixture:freeze": "UPDATE_ACCOUNT_FIXTURE_EXPECTED=1 vitest run src/rr/models/account-regression-fixtures.test.ts",
+    "fit:hltv": "node scripts/fit-hltv-weights.mjs"
   },
   "packageManager": "pnpm@11.0.8",
   "devDependencies": {
+    "@types/node": "^25.9.1",
     "typescript": "^5.4.0",
     "vitest": "^2.0.0"
   },

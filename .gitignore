@@ -1,6 +1,12 @@
 node_modules/
+.venv/
+.awpy-home/
+.map-control-cache/
 dist/
 *.tsbuildinfo
+__pycache__/
+*.pyc
 .omc/
 .pnpm-store/
 docs/superpowers/plans/
+.demo-cache/

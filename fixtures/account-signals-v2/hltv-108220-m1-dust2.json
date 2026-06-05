@@ -1,0 +1,686 @@
+{
+  "id": "hltv-108220-m1-dust2",
+  "source": {
+    "matchUrl": "https://www.hltv.org/matches/2394219/falcons-vs-legacy-cs-asia-championships-2026",
+    "demoFile": "falcons-vs-legacy-m1-dust2.dem",
+    "tier": "elite",
+    "parsedAt": "2026-06-04T02:54:53.964Z"
+  },
+  "signals": [
+    {
+      "steamId64": "76561197989430253",
+      "rounds": 20,
+      "sourceVersion": "analysis-to-account-fixture/0.1",
+      "combat": {
+        "kills": 11,
+        "deaths": 14,
+        "assists": 6,
+        "effectiveDamage": 1875,
+        "openingKills": 0,
+        "openingDeaths": 0,
+        "multiKills": {
+          "two": 0,
+          "three": 0,
+          "four": 0,
+          "five": 0
+        },
+        "headshotKills": 10,
+        "wallbangKills": 0,
+        "killsByBuyDelta": null,
+        "killsByManState": null
+      },
+      "trade": {
+        "tradeKills": 0,
+        "tradedDeaths": 0,
+        "deaths": 14,
+        "tradedOpeningDeaths": null
+      },
+      "clutch": {
+        "vsOne": {
+          "count": 0,
+          "won": 0
+        },
+        "vsTwo": {
+          "count": 0,
+          "won": 0
+        },
+        "vsThree": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFour": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFive": {
+          "count": 0,
+          "won": 0
+        }
+      },
+      "objective": {
+        "plants": 0,
+        "defuses": 0,
+        "plantsConverted": 0
+      },
+      "utility": {
+        "flashAssists": 0,
+        "enemyFlashDurationSeconds": 0,
+        "teamFlashDurationSeconds": null,
+        "utilityDamage": 0
+      }
+    },
+    {
+      "steamId64": "76561197996678278",
+      "rounds": 20,
+      "sourceVersion": "analysis-to-account-fixture/0.1",
+      "combat": {
+        "kills": 16,
+        "deaths": 13,
+        "assists": 6,
+        "effectiveDamage": 2268,
+        "openingKills": 0,
+        "openingDeaths": 0,
+        "multiKills": {
+          "two": 0,
+          "three": 0,
+          "four": 0,
+          "five": 0
+        },
+        "headshotKills": 9,
+        "wallbangKills": 0,
+        "killsByBuyDelta": null,
+        "killsByManState": null
+      },
+      "trade": {
+        "tradeKills": 0,
+        "tradedDeaths": 0,
+        "deaths": 13,
+        "tradedOpeningDeaths": null
+      },
+      "clutch": {
+        "vsOne": {
+          "count": 0,
+          "won": 0
+        },
+        "vsTwo": {
+          "count": 0,
+          "won": 0
+        },
+        "vsThree": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFour": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFive": {
+          "count": 0,
+          "won": 0
+        }
+      },
+      "objective": {
+        "plants": 0,
+        "defuses": 0,
+        "plantsConverted": 0
+      },
+      "utility": {
+        "flashAssists": 0,
+        "enemyFlashDurationSeconds": 0,
+        "teamFlashDurationSeconds": null,
+        "utilityDamage": 0
+      }
+    },
+    {
+      "steamId64": "76561198041683378",
+      "rounds": 20,
+      "sourceVersion": "analysis-to-account-fixture/0.1",
+      "combat": {
+        "kills": 12,
+        "deaths": 12,
+        "assists": 5,
+        "effectiveDamage": 1721,
+        "openingKills": 0,
+        "openingDeaths": 0,
+        "multiKills": {
+          "two": 0,
+          "three": 0,
+          "four": 0,
+          "five": 0
+        },
+        "headshotKills": 6,
+        "wallbangKills": 0,
+        "killsByBuyDelta": null,
+        "killsByManState": null
+      },
+      "trade": {
+        "tradeKills": 0,
+        "tradedDeaths": 0,
+        "deaths": 12,
+        "tradedOpeningDeaths": null
+      },
+      "clutch": {
+        "vsOne": {
+          "count": 0,
+          "won": 0
+        },
+        "vsTwo": {
+          "count": 0,
+          "won": 0
+        },
+        "vsThree": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFour": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFive": {
+          "count": 0,
+          "won": 0
+        }
+      },
+      "objective": {
+        "plants": 0,
+        "defuses": 0,
+        "plantsConverted": 0
+      },
+      "utility": {
+        "flashAssists": 0,
+        "enemyFlashDurationSeconds": 0,
+        "teamFlashDurationSeconds": null,
+        "utilityDamage": 0
+      }
+    },
+    {
+      "steamId64": "76561198043769572",
+      "rounds": 20,
+      "sourceVersion": "analysis-to-account-fixture/0.1",
+      "combat": {
+        "kills": 10,
+        "deaths": 15,
+        "assists": 5,
+        "effectiveDamage": 1185,
+        "openingKills": 0,
+        "openingDeaths": 0,
+        "multiKills": {
+          "two": 0,
+          "three": 0,
+          "four": 0,
+          "five": 0
+        },
+        "headshotKills": 4,
+        "wallbangKills": 0,
+        "killsByBuyDelta": null,
+        "killsByManState": null
+      },
+      "trade": {
+        "tradeKills": 0,
+        "tradedDeaths": 0,
+        "deaths": 15,
+        "tradedOpeningDeaths": null
+      },
+      "clutch": {
+        "vsOne": {
+          "count": 0,
+          "won": 0
+        },
+        "vsTwo": {
+          "count": 0,
+          "won": 0
+        },
+        "vsThree": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFour": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFive": {
+          "count": 0,
+          "won": 0
+        }
+      },
+      "objective": {
+        "plants": 0,
+        "defuses": 0,
+        "plantsConverted": 0
+      },
+      "utility": {
+        "flashAssists": 0,
+        "enemyFlashDurationSeconds": 0,
+        "teamFlashDurationSeconds": null,
+        "utilityDamage": 0
+      }
+    },
+    {
+      "steamId64": "76561198061763596",
+      "rounds": 20,
+      "sourceVersion": "analysis-to-account-fixture/0.1",
+      "combat": {
+        "kills": 13,
+        "deaths": 14,
+        "assists": 0,
+        "effectiveDamage": 1543,
+        "openingKills": 0,
+        "openingDeaths": 0,
+        "multiKills": {
+          "two": 0,
+          "three": 0,
+          "four": 0,
+          "five": 0
+        },
+        "headshotKills": 6,
+        "wallbangKills": 0,
+        "killsByBuyDelta": null,
+        "killsByManState": null
+      },
+      "trade": {
+        "tradeKills": 0,
+        "tradedDeaths": 0,
+        "deaths": 14,
+        "tradedOpeningDeaths": null
+      },
+      "clutch": {
+        "vsOne": {
+          "count": 0,
+          "won": 0
+        },
+        "vsTwo": {
+          "count": 0,
+          "won": 0
+        },
+        "vsThree": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFour": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFive": {
+          "count": 0,
+          "won": 0
+        }
+      },
+      "objective": {
+        "plants": 0,
+        "defuses": 0,
+        "plantsConverted": 0
+      },
+      "utility": {
+        "flashAssists": 0,
+        "enemyFlashDurationSeconds": 0,
+        "teamFlashDurationSeconds": null,
+        "utilityDamage": 0
+      }
+    },
+    {
+      "steamId64": "76561198074762801",
+      "rounds": 20,
+      "sourceVersion": "analysis-to-account-fixture/0.1",
+      "combat": {
+        "kills": 21,
+        "deaths": 12,
+        "assists": 2,
+        "effectiveDamage": 4876,
+        "openingKills": 0,
+        "openingDeaths": 0,
+        "multiKills": {
+          "two": 0,
+          "three": 0,
+          "four": 0,
+          "five": 0
+        },
+        "headshotKills": 10,
+        "wallbangKills": 0,
+        "killsByBuyDelta": null,
+        "killsByManState": null
+      },
+      "trade": {
+        "tradeKills": 0,
+        "tradedDeaths": 0,
+        "deaths": 12,
+        "tradedOpeningDeaths": null
+      },
+      "clutch": {
+        "vsOne": {
+          "count": 0,
+          "won": 0
+        },
+        "vsTwo": {
+          "count": 0,
+          "won": 0
+        },
+        "vsThree": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFour": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFive": {
+          "count": 0,
+          "won": 0
+        }
+      },
+      "objective": {
+        "plants": 0,
+        "defuses": 0,
+        "plantsConverted": 0
+      },
+      "utility": {
+        "flashAssists": 0,
+        "enemyFlashDurationSeconds": 0,
+        "teamFlashDurationSeconds": null,
+        "utilityDamage": 0
+      }
+    },
+    {
+      "steamId64": "76561198100494962",
+      "rounds": 20,
+      "sourceVersion": "analysis-to-account-fixture/0.1",
+      "combat": {
+        "kills": 17,
+        "deaths": 13,
+        "assists": 10,
+        "effectiveDamage": 2508,
+        "openingKills": 0,
+        "openingDeaths": 0,
+        "multiKills": {
+          "two": 0,
+          "three": 0,
+          "four": 0,
+          "five": 0
+        },
+        "headshotKills": 4,
+        "wallbangKills": 0,
+        "killsByBuyDelta": null,
+        "killsByManState": null
+      },
+      "trade": {
+        "tradeKills": 0,
+        "tradedDeaths": 0,
+        "deaths": 13,
+        "tradedOpeningDeaths": null
+      },
+      "clutch": {
+        "vsOne": {
+          "count": 0,
+          "won": 0
+        },
+        "vsTwo": {
+          "count": 0,
+          "won": 0
+        },
+        "vsThree": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFour": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFive": {
+          "count": 0,
+          "won": 0
+        }
+      },
+      "objective": {
+        "plants": 0,
+        "defuses": 0,
+        "plantsConverted": 0
+      },
+      "utility": {
+        "flashAssists": 0,
+        "enemyFlashDurationSeconds": 0,
+        "teamFlashDurationSeconds": null,
+        "utilityDamage": 0
+      }
+    },
+    {
+      "steamId64": "76561198194325317",
+      "rounds": 20,
+      "sourceVersion": "analysis-to-account-fixture/0.1",
+      "combat": {
+        "kills": 13,
+        "deaths": 18,
+        "assists": 5,
+        "effectiveDamage": 1688,
+        "openingKills": 0,
+        "openingDeaths": 0,
+        "multiKills": {
+          "two": 0,
+          "three": 0,
+          "four": 0,
+          "five": 0
+        },
+        "headshotKills": 3,
+        "wallbangKills": 0,
+        "killsByBuyDelta": null,
+        "killsByManState": null
+      },
+      "trade": {
+        "tradeKills": 0,
+        "tradedDeaths": 0,
+        "deaths": 18,
+        "tradedOpeningDeaths": null
+      },
+      "clutch": {
+        "vsOne": {
+          "count": 0,
+          "won": 0
+        },
+        "vsTwo": {
+          "count": 0,
+          "won": 0
+        },
+        "vsThree": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFour": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFive": {
+          "count": 0,
+          "won": 0
+        }
+      },
+      "objective": {
+        "plants": 0,
+        "defuses": 0,
+        "plantsConverted": 0
+      },
+      "utility": {
+        "flashAssists": 0,
+        "enemyFlashDurationSeconds": 0,
+        "teamFlashDurationSeconds": null,
+        "utilityDamage": 0
+      }
+    },
+    {
+      "steamId64": "76561198850020186",
+      "rounds": 20,
+      "sourceVersion": "analysis-to-account-fixture/0.1",
+      "combat": {
+        "kills": 11,
+        "deaths": 14,
+        "assists": 3,
+        "effectiveDamage": 1619,
+        "openingKills": 0,
+        "openingDeaths": 0,
+        "multiKills": {
+          "two": 0,
+          "three": 0,
+          "four": 0,
+          "five": 0
+        },
+        "headshotKills": 8,
+        "wallbangKills": 0,
+        "killsByBuyDelta": null,
+        "killsByManState": null
+      },
+      "trade": {
+        "tradeKills": 0,
+        "tradedDeaths": 0,
+        "deaths": 14,
+        "tradedOpeningDeaths": null
+      },
+      "clutch": {
+        "vsOne": {
+          "count": 0,
+          "won": 0
+        },
+        "vsTwo": {
+          "count": 0,
+          "won": 0
+        },
+        "vsThree": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFour": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFive": {
+          "count": 0,
+          "won": 0
+        }
+      },
+      "objective": {
+        "plants": 0,
+        "defuses": 0,
+        "plantsConverted": 0
+      },
+      "utility": {
+        "flashAssists": 0,
+        "enemyFlashDurationSeconds": 0,
+        "teamFlashDurationSeconds": null,
+        "utilityDamage": 0
+      }
+    },
+    {
+      "steamId64": "76561199032006224",
+      "rounds": 20,
+      "sourceVersion": "analysis-to-account-fixture/0.1",
+      "combat": {
+        "kills": 14,
+        "deaths": 13,
+        "assists": 5,
+        "effectiveDamage": 2237,
+        "openingKills": 0,
+        "openingDeaths": 0,
+        "multiKills": {
+          "two": 0,
+          "three": 0,
+          "four": 0,
+          "five": 0
+        },
+        "headshotKills": 7,
+        "wallbangKills": 0,
+        "killsByBuyDelta": null,
+        "killsByManState": null
+      },
+      "trade": {
+        "tradeKills": 0,
+        "tradedDeaths": 0,
+        "deaths": 13,
+        "tradedOpeningDeaths": null
+      },
+      "clutch": {
+        "vsOne": {
+          "count": 0,
+          "won": 0
+        },
+        "vsTwo": {
+          "count": 0,
+          "won": 0
+        },
+        "vsThree": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFour": {
+          "count": 0,
+          "won": 0
+        },
+        "vsFive": {
+          "count": 0,
+          "won": 0
+        }
+      },
+      "objective": {
+        "plants": 0,
+        "defuses": 0,
+        "plantsConverted": 0
+      },
+      "utility": {
+        "flashAssists": 0,
+        "enemyFlashDurationSeconds": 0,
+        "teamFlashDurationSeconds": null,
+        "utilityDamage": 0
+      }
+    }
+  ],
+  "expected": {
+    "tolerance": 0.000001,
+    "players": [
+      {
+        "steamId64": "76561197989430253",
+        "valueAccountsRR": 0.75125,
+        "cohortRR": 0.928748
+      },
+      {
+        "steamId64": "76561197996678278",
+        "valueAccountsRR": 0.97145,
+        "cohortRR": 1.096179
+      },
+      {
+        "steamId64": "76561198041683378",
+        "valueAccountsRR": 0.80315,
+        "cohortRR": 1.078496
+      },
+      {
+        "steamId64": "76561198043769572",
+        "valueAccountsRR": 0.5965,
+        "cohortRR": 0.792503
+      },
+      {
+        "steamId64": "76561198061763596",
+        "valueAccountsRR": 0.75645,
+        "cohortRR": 0.931226
+      },
+      {
+        "steamId64": "76561198074762801",
+        "valueAccountsRR": 1.5239,
+        "cohortRR": 1.42192
+      },
+      {
+        "steamId64": "76561198100494962",
+        "valueAccountsRR": 1.03495,
+        "cohortRR": 1.126435
+      },
+      {
+        "steamId64": "76561198194325317",
+        "valueAccountsRR": 0.6832,
+        "cohortRR": 0.646286
+      },
+      {
+        "steamId64": "76561198850020186",
+        "valueAccountsRR": 0.71285,
+        "cohortRR": 0.910451
+      },
+      {
+        "steamId64": "76561199032006224",
+        "valueAccountsRR": 0.9118,
+        "cohortRR": 1.067756
+      }
+    ]
+  }
+}

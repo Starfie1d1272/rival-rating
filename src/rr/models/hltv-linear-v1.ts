@@ -9,10 +9,11 @@ import type { RRIndicators } from "../../types/indicators.js";
 import type { RRWeights, RRResult } from "../../types/rr.js";
 import type { RRModel } from "../../types/accounts.js";
 import { computeRR } from "../compute.js";
+import rrWeightsV1 from "../../weights/rr-v1.json" with { type: "json" };
 
 export const hltvLinearV1Model: RRModel<RRIndicators, RRWeights, RRResult> = {
   id: "hltv-linear-v1",
-  version: "rr-1.0",
+  version: rrWeightsV1.version,
   inputKind: "rr-indicators",
   compute: computeRR,
 };

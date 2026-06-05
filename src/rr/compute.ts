@@ -56,12 +56,12 @@ export function computeRR(
     const ecoFrac   = ind.ecoRoundCount   / totalCategorized;
     const forceFrac = ind.forceRoundCount / totalCategorized;
     const fullFrac  = ind.fullBuyRoundCount / totalCategorized;
-    // pistol 保持 1.0，不参与调整
+    const pistolFrac = ind.pistolRoundCount / totalCategorized;
     const ecoAdjust =
       ecoFrac   * ecoMultipliers.ecoKillMultiplier +
       forceFrac * ecoMultipliers.forceKillMultiplier +
       fullFrac  * ecoMultipliers.fullBuyKillMultiplier +
-      (1 - ecoFrac - forceFrac - fullFrac); // pistol + unknown → 1.0
+      pistolFrac * ecoMultipliers.pistolKillMultiplier;
 
     // 只对击杀项（kprTerm + impactTerm）施加乘子，ADR/KAST 不调整
     const killTerms = kprTerm + impactTerm;

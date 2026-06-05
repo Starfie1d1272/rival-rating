@@ -16,10 +16,11 @@
   },
 
   "ecoMultipliers": {
-    "_comment": "全为 1.0 = 不激活。用几十张自有赛事图回归校准后替换。",
+    "_comment": "全为 1.0 = 不激活。eco/force/fullBuy/pistol 击杀乘子用几十张自有赛事图回归校准后替换。",
     "ecoKillMultiplier": 1.0,
     "forceKillMultiplier": 1.0,
     "fullBuyKillMultiplier": 1.0,
+    "pistolKillMultiplier": 1.0,
     "ecoVsFullBonus": 1.0
   },
 

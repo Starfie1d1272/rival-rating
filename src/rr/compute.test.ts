@@ -21,6 +21,7 @@ const weights: RRWeights = {
     ecoKillMultiplier: 1.0,
     forceKillMultiplier: 1.0,
     fullBuyKillMultiplier: 1.0,
+    pistolKillMultiplier: 1.0,
     ecoVsFullBonus: 1.0,
   },
   layer2: { roundSwingCoef: 0.0 },
@@ -143,6 +144,24 @@ describe("computeRR", () => {
   it("Layer 2 关闭时 rrSwing 为 0", () => {
     const result = computeRR(makeAvgPlayer(), weights);
     expect(result.rrSwing).toBe(0);
+  });
+
+  it("pistol round multiplier is controlled by weights", () => {
+    const allPistol = makeAvgPlayer({
+      ecoRoundCount: 0,
+      forceRoundCount: 0,
+      fullBuyRoundCount: 0,
+      pistolRoundCount: 24,
+    });
+    const tuned: RRWeights = {
+      ...weights,
+      ecoMultipliers: {
+        ...weights.ecoMultipliers,
+        pistolKillMultiplier: 1.2,
+      },
+    };
+
+    expect(computeRR(allPistol, tuned).rr).toBeGreaterThan(computeRR(allPistol, weights).rr);
   });
 
   it("clamp 生效：极差选手不低于 0.1", () => {
