@@ -64,6 +64,44 @@ export type { PrismComputeInput } from "./prism/compute.js";
 export { zScoreAll, coldStartShrink, zToPercentile, normalCDF } from "./prism/zscore.js";
 export { extractAxisScore } from "./prism/extract.js";
 
+// ─── 地图控制 MVP（独立于 RR / PRISM）──────────────────────────────────────
+export { computeMapControl, detectControlLossEvents, teams as mapControlTeams } from "./map-control/index.js";
+export {
+  DEFAULT_MAP_CONTROL_CONFIG,
+  canPlayerSeeSample,
+  distance as mapControlDistance,
+  eyePosition,
+  isWithinHorizontalFov,
+  isWithinVerticalFov,
+  resolveMapControlConfig,
+  segmentIntersectsSmoke,
+} from "./map-control/index.js";
+export type {
+  ActiveSmoke,
+  ControlLossOptions,
+  MapControlConfig,
+  MapControlFrame,
+  MapControlInput,
+  MapControlSamplePoint,
+  MapControlTeam,
+  MapControlTick,
+  MapControlTimeline,
+  MapControlZone,
+  OverlayState,
+  PlayerSampleVisibility,
+  PlayerVisionState,
+  StaticLineOfSight,
+  StaticLineOfSightQuery,
+  TeamControlRecord,
+  TeamZoneControl,
+  Vec3,
+  VisibleSample,
+  ZoneControlFrame,
+  ZoneControlLossEvent,
+  ZoneControlState,
+} from "./map-control/index.js";
+export { MAP_CONTROL_TEAMS } from "./map-control/index.js";
+
 // ─── 默认权重 ─────────────────────────────────────────────────────────────
 // 直接命名导出 JSON,消费方按需断言类型：
 //   import { rrWeightsV1 } from "@rivalhub/rival-rating";

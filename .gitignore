@@ -1,4 +1,7 @@
 node_modules/
+.venv/
+.awpy-home/
+.map-control-cache/
 dist/
 *.tsbuildinfo
 __pycache__/

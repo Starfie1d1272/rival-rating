@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>CS2 Map Control</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <aside class="control-rail">
+        <div class="brand">
+          <span class="mark"></span>
+          <div>
+            <h1>Map Control</h1>
+            <p>Nav-area visibility replay</p>
+          </div>
+        </div>
+
+        <section class="panel">
+          <h2>Demo</h2>
+          <label>
+            Dataset
+            <select id="datasetSelect"></select>
+          </label>
+          <div class="button-row">
+            <button id="analyzeDataset" class="primary">Analyze selected</button>
+          </div>
+          <label class="file-picker">
+            <span>Upload .dem</span>
+            <input id="fileInput" type="file" accept=".dem" />
+          </label>
+        </section>
+
+        <section class="panel compact">
+          <h2>Analysis</h2>
+          <label>
+            Sample seconds
+            <input id="sampleSeconds" type="number" min="1" max="20" step="1" value="4" />
+          </label>
+          <label>
+            Max frames
+            <input id="maxFrames" type="number" min="30" max="900" step="30" value="360" />
+          </label>
+          <label>
+            Residual seconds
+            <input id="residualSeconds" type="number" min="0" max="10" step="0.5" value="3" />
+          </label>
+          <label>
+            Vertical FOV
+            <input id="verticalFovDeg" type="number" min="30" max="140" step="5" value="75" />
+          </label>
+          <label class="toggle-line">
+            <input id="staticLos" type="checkbox" />
+            <span>Static LOS (slow)</span>
+          </label>
+        </section>
+
+        <section class="panel status-panel">
+          <h2>Status</h2>
+          <p id="statusText">Loading dataset list...</p>
+        </section>
+      </aside>
+
+      <section class="stage">
+        <header class="topbar">
+          <div>
+            <div id="demoTitle" class="demo-title">No demo loaded</div>
+            <div id="demoMeta" class="demo-meta">Choose an existing demo or upload a .dem file.</div>
+          </div>
+          <div class="legend" aria-label="Overlay legend">
+            <span><i class="swatch t"></i>T control</span>
+            <span><i class="swatch ct"></i>CT control</span>
+            <span><i class="swatch contested"></i>Contested</span>
+            <span><i class="swatch residual"></i>Residual info</span>
+            <span><i class="swatch static"></i>Static info</span>
+            <span><i class="swatch smoke"></i>Smoke</span>
+          </div>
+        </header>
+
+        <div class="map-wrap">
+          <div id="mapFrame" class="map-frame">
+            <img id="mapImageLayer" alt="" />
+            <img id="overlayImageLayer" alt="" />
+            <canvas id="mapCanvas" width="1024" height="1024"></canvas>
+          </div>
+        </div>
+
+        <footer class="timeline">
+          <button id="playButton">Play</button>
+          <input id="frameSlider" type="range" min="0" max="0" value="0" />
+          <div id="frameReadout">Frame 0 / 0</div>
+        </footer>
+      </section>
+
+      <aside class="inspector">
+        <section class="panel stat-grid">
+          <div>
+            <span class="stat-label">T areas</span>
+            <strong id="statT">0</strong>
+          </div>
+          <div>
+            <span class="stat-label">CT areas</span>
+            <strong id="statCT">0</strong>
+          </div>
+          <div>
+            <span class="stat-label">Contested</span>
+            <strong id="statContested">0</strong>
+          </div>
+          <div>
+            <span class="stat-label">Vacuum</span>
+            <strong id="statVacuum">0</strong>
+          </div>
+          <div>
+            <span class="stat-label">T residual</span>
+            <strong id="statTResidual">0</strong>
+          </div>
+          <div>
+            <span class="stat-label">CT residual</span>
+            <strong id="statCTResidual">0</strong>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Players</h2>
+          <div id="playerList" class="player-list"></div>
+        </section>
+
+        <section class="panel static-info-panel">
+          <h2>Static Info</h2>
+          <div class="static-info-metrics">
+            <div>
+              <span class="stat-label">Origin</span>
+              <strong id="staticOrigin">-</strong>
+            </div>
+            <div>
+              <span class="stat-label">Visible</span>
+              <strong id="staticVisible">0</strong>
+            </div>
+            <div>
+              <span class="stat-label">Area Size</span>
+              <strong id="staticAreaSize">0</strong>
+            </div>
+            <div>
+              <span class="stat-label">Cache</span>
+              <strong id="staticCache">-</strong>
+            </div>
+          </div>
+          <p id="staticInfoText" class="static-info-text">No coordinate selected.</p>
+        </section>
+
+        <section class="panel event-panel">
+          <h2>Control losses</h2>
+          <div id="eventList" class="event-list"></div>
+        </section>
+      </aside>
+    </main>
+
+    <script src="/static/app.js" type="module"></script>
+  </body>
+</html>
