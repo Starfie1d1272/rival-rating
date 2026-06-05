@@ -9,7 +9,7 @@
  *    player-map 不需要 cohort 就能算出绝对、可移植的 RR**，1.0 = 职业平均。
  *
  * 数学（与 analysis 仓库 freeze-pro-baseline.ts 完全一致）：
- *   raw_a       = computeValueAccountsRR(sig).accounts[a] / accountWeight[a]
+ *   raw_a       = computeRRSixAccounts(sig).accounts[a] / accountWeight[a]
  *   z_a         = (raw_a − mean_a) / std_a                         // 用冻结的 mean/std
  *   used_combat = z_combat
  *   used_a      = (z_a − slope_a·z_combat) / sqrt(1 − slope_a²)    // 用冻结的残差化斜率
@@ -22,9 +22,9 @@
  * 纯函数，无副作用。
  */
 
-import { computeValueAccountsRR } from "./value-accounts-v2-lite.js";
+import { computeRRSixAccounts } from "./six-accounts.js";
 import { RR_ACCOUNTS } from "../../types/accounts.js";
-import type { AccountSignalsV2, RRAccountKey, ValueAccountsWeights } from "../../types/accounts.js";
+import type { RRAccountKey, RRSixAccountWeights, RRSignals } from "../../types/accounts.js";
 import type { CohortAccountResult } from "./cohort-accounts.js";
 
 /** 单个账户的冻结分布参数。 */
@@ -58,16 +58,16 @@ export interface ProBaselineConfig {
  * 用冻结职业基准给**单个** player-map 算绝对 RR。
  *
  * @param sig       单名选手单张 demo 的账户证据
- * @param weights   value-accounts 权重（accountWeights 必须与 baseline 一致）
+ * @param weights   RR 六账户权重（accountWeights 必须与 baseline 一致）
  * @param baseline  冻结的职业基准配置
  */
 export function computeFrozenProBaselineRR(
-  sig: AccountSignalsV2,
-  weights: ValueAccountsWeights,
+  sig: RRSignals,
+  weights: RRSixAccountWeights,
   baseline: ProBaselineConfig,
 ): CohortAccountResult {
   const w = weights.accountWeights;
-  const result = computeValueAccountsRR(sig, weights);
+  const result = computeRRSixAccounts(sig, weights);
 
   // 1. raw → z（用冻结的 mean/std）
   const z = {} as Record<RRAccountKey, number>;
@@ -103,8 +103,8 @@ export function computeFrozenProBaselineRR(
 
 /** 批量便利封装：对多名选手分别套同一把冻结尺子（彼此独立，不构成 cohort）。 */
 export function computeFrozenProBaselineBatch(
-  signals: AccountSignalsV2[],
-  weights: ValueAccountsWeights,
+  signals: RRSignals[],
+  weights: RRSixAccountWeights,
   baseline: ProBaselineConfig,
 ): CohortAccountResult[] {
   return signals.map((s) => computeFrozenProBaselineRR(s, weights, baseline));

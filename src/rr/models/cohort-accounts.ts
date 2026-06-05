@@ -1,9 +1,9 @@
 /**
- * cohort-accounts — 跨选手的 value-accounts 平衡（赛季 / 单场 cohort 通用）
+ * cohort-accounts — 跨选手的六账户 RR 平衡（赛季 / 单场 cohort 通用）
  *
  * 背景（55 场 ratingPro/WE 校准实证）：
- *  - 五账户的 raw 量级天然差 ~20–40×（combat 每回合发生，clutch/objective 稀有），
- *    `computeValueAccountsRR` 的线性相加里 combat 碾压其余四账户，accountWeight 先验形同虚设。
+ *  - 六账户的 raw 量级天然不同（combat 每回合发生，clutch/objective 稀有），
+ *    `computeRRSixAccounts` 的线性相加里 combat 容易碾压其余账户。
  *  - 整体评分 ≈ combat（combat 单独 corr(ratingPro)=0.90）；非 combat 账户独立信号弱且与
  *    combat 共线（clutch standalone 0.46 但与 combat 共线 0.56）。
  *  - 残差化后，正交团队增量对 ratingPro/WE 的边际预测力 ≈ 0。
@@ -21,9 +21,9 @@
  * 纯函数，无副作用。
  */
 
-import { computeValueAccountsRR } from "./value-accounts-v2-lite.js";
+import { computeRRSixAccounts } from "./six-accounts.js";
 import { RR_ACCOUNTS } from "../../types/accounts.js";
-import type { AccountSignalsV2, RRAccountKey, ValueAccountsWeights } from "../../types/accounts.js";
+import type { RRAccountKey, RRSixAccountWeights, RRSignals } from "../../types/accounts.js";
 
 export interface CohortAccountResult {
   steamId64: string;
@@ -41,14 +41,14 @@ export interface CohortAccountsOptions {
 }
 
 export function computeCohortAccountsRR(
-  signals: AccountSignalsV2[],
-  weights: ValueAccountsWeights,
+  signals: RRSignals[],
+  weights: RRSixAccountWeights,
   opts: CohortAccountsOptions = {},
 ): CohortAccountResult[] {
   const n = signals.length;
   if (n === 0) return [];
   const w = weights.accountWeights;
-  const results = signals.map((s) => computeValueAccountsRR(s, weights));
+  const results = signals.map((s) => computeRRSixAccounts(s, weights));
 
   // 1. per-account raw（= 加权贡献 / accountWeight），跨选手标准化
   const z = {} as Record<RRAccountKey, number[]>;

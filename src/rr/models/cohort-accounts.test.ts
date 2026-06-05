@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { computeCohortAccountsRR } from "./cohort-accounts.js";
-import type { AccountSignalsV2, ValueAccountsWeights } from "../../types/accounts.js";
-import weightsJson from "../../weights/rr-value-accounts-v2-lite.json" with { type: "json" };
+import type { RRSixAccountWeights, RRSignals } from "../../types/accounts.js";
+import weightsJson from "../../weights/rr-six-accounts-v1.json" with { type: "json" };
 
-const weights = weightsJson as unknown as ValueAccountsWeights;
+const weights = weightsJson as unknown as RRSixAccountWeights;
 
 function makePlayer(
   id: string,
-  o: { kills?: number; deaths?: number; damage?: number; clutchWon?: number; clutchCount?: number } = {},
-): AccountSignalsV2 {
+  o: { kills?: number; deaths?: number; damage?: number; clutchWon?: number; clutchCount?: number; mapControl?: number } = {},
+): RRSignals {
   const rounds = 200;
   const clutchCount = o.clutchCount ?? 4;
   return {
@@ -27,7 +27,31 @@ function makePlayer(
       killsByBuyDelta: { disadvantage: 20, even: 90, advantage: 30 },
       killsByManState: { manDown: 40, even: 60, manUp: 40 },
     },
-    trade: { tradeKills: 30, tradedDeaths: 25, deaths: o.deaths ?? 130, tradedOpeningDeaths: 8 },
+    trade: {
+      tradeKills: 30,
+      tradedDeaths: 25,
+      deaths: o.deaths ?? 130,
+      tradedOpeningDeaths: 8,
+      strategicIsolationDeaths: 2,
+    },
+    mapControl: {
+      uniqueStrategicControlSeconds: o.mapControl ?? 180,
+      contestedFrontierControlSeconds: 120,
+      routeDenialSeconds: 90,
+      teammateAdvanceUnits: 250,
+      firstControlEvents: 20,
+    },
+    utility: {
+      flashAssists: 10,
+      effectiveEnemyFlashSeconds: 90,
+      teamFlashSuppressionSeconds: 8,
+      smokeProtectedCrossings: 15,
+      smokeSightlineDenialSeconds: 60,
+      smokeIsolationSeconds: 40,
+      incendiaryPathDelayUnits: 180,
+      incendiaryDisplacementEvents: 5,
+      utilityDamage: 600,
+    },
     clutch: {
       vsOne: { count: clutchCount, won: o.clutchWon ?? 1 },
       vsTwo: { count: 2, won: 0 },
@@ -36,7 +60,6 @@ function makePlayer(
       vsFive: { count: 0, won: 0 },
     },
     objective: { plants: 6, defuses: 3, plantsConverted: 4 },
-    utility: { flashAssists: 10, enemyFlashDurationSeconds: 90, teamFlashDurationSeconds: 8, utilityDamage: 600 },
   };
 }
 
@@ -74,6 +97,19 @@ describe("computeCohortAccountsRR", () => {
     // residual 账户对总和有贡献（非全 0）
     const clutchStd = stdev(out.map((r) => r.accounts.clutch));
     expect(clutchStd).toBeGreaterThan(0);
+  });
+
+  it("keeps MapControl as an independent residual account", () => {
+    const cohort = [
+      makePlayer("low", { mapControl: 60 }),
+      makePlayer("high", { mapControl: 300 }),
+      makePlayer("mid", { mapControl: 160 }),
+      makePlayer("x", { kills: 170, damage: 19000, mapControl: 100 }),
+      makePlayer("y", { kills: 100, damage: 12000, mapControl: 220 }),
+    ];
+    const out = computeCohortAccountsRR(cohort, weights);
+    const acc = new Map(out.map((r) => [r.steamId64, r.accounts]));
+    expect(acc.get("high")!.mapControl).toBeGreaterThan(acc.get("low")!.mapControl);
   });
 
   it("returns empty for empty cohort", () => {

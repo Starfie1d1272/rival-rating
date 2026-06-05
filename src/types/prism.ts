@@ -106,6 +106,10 @@ export interface PrismAxisResult {
   involvementRaw: number;
   /** 加权效率原始分（未做 z-score） */
   efficiencyRaw: number;
+  /** 该轴至少有一个可用原始信号；false 时 percentile 固定为 0。 */
+  hasSignal: boolean;
+  /** 可用信号权重占配置总权重的比例，0–1。 */
+  availableSignalWeight: number;
   /** 融合后 z-score（已冷启动收缩） */
   z: number;
   /** 最终百分位（0–100，在本赛季批次内） */

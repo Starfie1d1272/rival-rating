@@ -20,7 +20,7 @@ import type {
   PrismResult,
 } from "../types/prism.js";
 import { PRISM_AXES } from "../types/prism.js";
-import { extractAxisScore } from "./extract.js";
+import { extractAxisScoreDetails } from "./extract.js";
 import { zScoreAll, coldStartShrink, zToPercentile } from "./zscore.js";
 
 export interface PrismComputeInput {
@@ -49,17 +49,25 @@ export function computePrism(
   // Shape: rawScores[axisIdx][playerIdx] = { inv, eff }
   const rawInv: Record<PrismAxisKey, number[]> = {} as never;
   const rawEff: Record<PrismAxisKey, number[]> = {} as never;
+  const signalCoverage: Record<PrismAxisKey, number[]> = {} as never;
+  const hasSignal: Record<PrismAxisKey, boolean[]> = {} as never;
 
   for (const axis of PRISM_AXES) {
     rawInv[axis] = [];
     rawEff[axis] = [];
+    signalCoverage[axis] = [];
+    hasSignal[axis] = [];
   }
 
   for (const entry of cohort) {
     for (const axis of PRISM_AXES) {
       const cfg = axes[axis];
-      rawInv[axis].push(extractAxisScore(entry.indicators, cfg.involvement));
-      rawEff[axis].push(extractAxisScore(entry.indicators, cfg.efficiency));
+      const inv = extractAxisScoreDetails(entry.indicators, cfg.involvement);
+      const eff = extractAxisScoreDetails(entry.indicators, cfg.efficiency);
+      rawInv[axis].push(inv.score);
+      rawEff[axis].push(eff.score);
+      hasSignal[axis].push(inv.hasSignal || eff.hasSignal);
+      signalCoverage[axis].push((inv.availableSignalWeight + eff.availableSignalWeight) / 2);
     }
   }
 
@@ -78,6 +86,7 @@ export function computePrism(
   for (const axis of PRISM_AXES) {
     const alpha = axes[axis].alpha;
     fusedZ[axis] = cohort.map((_, i) => {
+      if (!(hasSignal[axis][i] ?? false)) return 0;
       const zi = alpha * (zInv[axis][i] ?? 0) + (1 - alpha) * (zEff[axis][i] ?? 0);
       return coldStartShrink(zi, cohort[i]?.mapCount ?? 1, coldStartK);
     });
@@ -89,11 +98,14 @@ export function computePrism(
 
     for (const axis of PRISM_AXES) {
       const z = fusedZ[axis][i] ?? 0;
+      const percentileCohort = fusedZ[axis].filter((_, j) => hasSignal[axis][j] ?? false);
       axisResults[axis] = {
         involvementRaw: rawInv[axis][i] ?? 0,
         efficiencyRaw:  rawEff[axis][i] ?? 0,
+        hasSignal:      hasSignal[axis][i] ?? false,
+        availableSignalWeight: signalCoverage[axis][i] ?? 0,
         z,
-        percentile: zToPercentile(z, fusedZ[axis]),
+        percentile: (hasSignal[axis][i] ?? false) ? zToPercentile(z, percentileCohort) : 0,
       };
     }
 

@@ -1,6 +1,6 @@
 {
   "name": "@rivalhub/rival-rating",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "RR (Rival Rating) scalar engine + PRISM eight-dimension radar",
   "type": "module",
   "exports": {
@@ -8,17 +8,23 @@
     "./weights/*": "./src/weights/*"
   },
   "scripts": {
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish",
     "test": "vitest run",
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit"
   },
   "packageManager": "pnpm@11.0.8",
   "devDependencies": {
+    "@changesets/cli": "^2.31.0",
     "typescript": "^5.4.0",
     "vitest": "^2.0.0"
   },
   "files": [
-    "src"
+    "src",
+    "!src/**/*.test.ts",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"

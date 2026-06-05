@@ -12,7 +12,7 @@ import { computeRR } from "../compute.js";
 
 export const hltvLinearV1Model: RRModel<RRIndicators, RRWeights, RRResult> = {
   id: "hltv-linear-v1",
-  version: "rr-1.0",
+  version: "hltv-2-baseline-1.0",
   inputKind: "rr-indicators",
   compute: computeRR,
 };

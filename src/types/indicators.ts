@@ -133,6 +133,20 @@ export interface RRIndicators {
   grenadeCount: number;
   grenadeCountPerRound: number;
 
+  // ─── 当前 RR 空间信号（PRISM 可选画像输入）──────────────────────────────
+  uniqueStrategicControlSecondsPerRound?: number | null;
+  contestedFrontierControlSecondsPerRound?: number | null;
+  routeDenialSecondsPerRound?: number | null;
+  teammateAdvanceUnitsPerRound?: number | null;
+  firstControlEventsPerRound?: number | null;
+  effectiveEnemyFlashSecondsPerRound?: number | null;
+  teamFlashSuppressionSecondsPerRound?: number | null;
+  smokeProtectedCrossingsPerRound?: number | null;
+  smokeSightlineDenialSecondsPerRound?: number | null;
+  smokeIsolationSecondsPerRound?: number | null;
+  incendiaryPathDelayUnitsPerRound?: number | null;
+  incendiaryDisplacementEventsPerRound?: number | null;
+
   // ─── 经济上下文（Layer 1 eco 加权输入）─────────────────────────────────
   /** 从 player-economies.json 聚合；type='eco' 回合数 */
   ecoRoundCount: number;

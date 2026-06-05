@@ -5,7 +5,7 @@
  * Layer 2（Round Swing）接口已预留，roundSwingCoef=0 时完全透明。
  *
  * 替换指南：
- *   1. 修改 rr-v1.json 中的系数，无需改动此文件
+ *   1. 修改 hltv-2-baseline-v1.json 中的系数，无需改动此文件
  *   2. 启用 eco 乘子：先用自有赛事 ~50 张图回归校准，再更新 ecoMultipliers
  *   3. 启用 Layer 2：等 ~1000 张图训好模型后，将 roundSwingCoef 设为非零值
  */

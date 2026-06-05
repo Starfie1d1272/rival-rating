@@ -1,14 +1,14 @@
 import { describe, it, expect } from "vitest";
 import { computeFrozenProBaselineRR } from "./frozen-pro-baseline.js";
 import type { ProBaselineConfig } from "./frozen-pro-baseline.js";
-import { computeValueAccountsRR } from "./value-accounts-v2-lite.js";
+import { computeRRSixAccounts } from "./six-accounts.js";
 import { RR_ACCOUNTS } from "../../types/accounts.js";
-import type { AccountSignalsV2, RRAccountKey, ValueAccountsWeights } from "../../types/accounts.js";
-import weightsJson from "../../weights/rr-value-accounts-v2-lite.json" with { type: "json" };
+import type { RRAccountKey, RRSixAccountWeights, RRSignals } from "../../types/accounts.js";
+import weightsJson from "../../weights/rr-six-accounts-v1.json" with { type: "json" };
 
-const weights = weightsJson as unknown as ValueAccountsWeights;
+const weights = weightsJson as unknown as RRSixAccountWeights;
 
-function makePlayer(id: string, o: { kills?: number; deaths?: number; damage?: number } = {}): AccountSignalsV2 {
+function makePlayer(id: string, o: { kills?: number; deaths?: number; damage?: number } = {}): RRSignals {
   const rounds = 200;
   return {
     steamId64: id,
@@ -26,7 +26,31 @@ function makePlayer(id: string, o: { kills?: number; deaths?: number; damage?: n
       killsByBuyDelta: null,
       killsByManState: null,
     },
-    trade: { tradeKills: 30, tradedDeaths: 25, deaths: o.deaths ?? 130, tradedOpeningDeaths: 8 },
+    trade: {
+      tradeKills: 30,
+      tradedDeaths: 25,
+      deaths: o.deaths ?? 130,
+      tradedOpeningDeaths: 8,
+      strategicIsolationDeaths: 2,
+    },
+    mapControl: {
+      uniqueStrategicControlSeconds: 180,
+      contestedFrontierControlSeconds: 120,
+      routeDenialSeconds: 90,
+      teammateAdvanceUnits: 250,
+      firstControlEvents: 20,
+    },
+    utility: {
+      flashAssists: 10,
+      effectiveEnemyFlashSeconds: 90,
+      teamFlashSuppressionSeconds: 8,
+      smokeProtectedCrossings: 15,
+      smokeSightlineDenialSeconds: 60,
+      smokeIsolationSeconds: 40,
+      incendiaryPathDelayUnits: 180,
+      incendiaryDisplacementEvents: 5,
+      utilityDamage: 600,
+    },
     clutch: {
       vsOne: { count: 4, won: 1 },
       vsTwo: { count: 2, won: 0 },
@@ -35,14 +59,13 @@ function makePlayer(id: string, o: { kills?: number; deaths?: number; damage?: n
       vsFive: { count: 0, won: 0 },
     },
     objective: { plants: 6, defuses: 3, plantsConverted: 4 },
-    utility: { flashAssists: 10, enemyFlashDurationSeconds: 90, teamFlashDurationSeconds: 8, utilityDamage: 600 },
   };
 }
 
 /** 用某选手的 raw 账户当 mean 造一个 baseline → 该选手所有 z=0。 */
-function baselineCenteredOn(p: AccountSignalsV2, opts: { scale?: number } = {}): ProBaselineConfig {
+function baselineCenteredOn(p: RRSignals, opts: { scale?: number } = {}): ProBaselineConfig {
   const w = weights.accountWeights;
-  const res = computeValueAccountsRR(p, weights);
+  const res = computeRRSixAccounts(p, weights);
   const accounts = {} as ProBaselineConfig["accounts"];
   for (const k of RR_ACCOUNTS as readonly RRAccountKey[]) {
     accounts[k] = { mean: w[k] !== 0 ? res.accounts[k] / w[k] : 0, std: 0.1, slope: 0 };

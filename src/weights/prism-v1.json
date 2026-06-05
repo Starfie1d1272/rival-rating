@@ -1,5 +1,5 @@
 {
-  "version": "prism-1.0",
+  "version": "prism-1.1",
   "coldStartK": 4,
   "ecoTilt": 0.0,
   "colorSource": "rr_percentile",
@@ -72,20 +72,22 @@
     },
 
     "utility": {
-      "_desc": "投掷物贡献。α=0.70 偏风格：勤投弹 + 高效致盲/伤害双重体现。",
+      "_desc": "投掷物贡献。α=0.70 偏风格：勤投弹 + 空间型烟火闪收益双重体现。",
       "alpha": 0.70,
       "involvement": [
-        { "signal": "grenadeCountPerRound",        "weight": 0.40 },
-        { "signal": "utilityDamagePerRound",       "weight": 0.30 },
-        { "signal": "flashAssistPerRound",         "weight": 0.30 },
-        { "signal": "enemyFlashDurationPerRound",  "weight": 0.00, "_note": "v2占位，激活时分摊 blindDurationPerRound 的权重" },
-        { "signal": "teamFlashDurationPerRound",   "weight": 0.00, "_note": "v2占位，负向信号，激活时用负权重" }
+        { "signal": "grenadeCountPerRound",                  "weight": 0.25 },
+        { "signal": "flashAssistPerRound",                   "weight": 0.20 },
+        { "signal": "effectiveEnemyFlashSecondsPerRound",    "weight": 0.20 },
+        { "signal": "smokeProtectedCrossingsPerRound",       "weight": 0.15 },
+        { "signal": "smokeSightlineDenialSecondsPerRound",   "weight": 0.10 },
+        { "signal": "incendiaryDisplacementEventsPerRound",  "weight": 0.10 }
       ],
       "efficiency": [
-        { "signal": "utilityDamagePerRound",       "weight": 0.40 },
-        { "signal": "blindDurationPerRound",       "weight": 0.30 },
-        { "signal": "flashAssistPerRound",         "weight": 0.30 },
-        { "signal": "enemyFlashDurationPerRound",  "weight": 0.00, "_note": "v2占位，替代 blindDurationPerRound" }
+        { "signal": "utilityDamagePerRound",                 "weight": 0.25 },
+        { "signal": "flashAssistPerRound",                   "weight": 0.20 },
+        { "signal": "effectiveEnemyFlashSecondsPerRound",    "weight": 0.20 },
+        { "signal": "smokeIsolationSecondsPerRound",         "weight": 0.15 },
+        { "signal": "incendiaryPathDelayUnitsPerRound",      "weight": 0.20 }
       ]
     },
 
@@ -93,8 +95,9 @@
       "_desc": "补枪、护队友。α=0.60：主动补枪频率 + 自身被补率（team asset）双重体现。",
       "alpha": 0.60,
       "involvement": [
-        { "signal": "tradeKillRate",  "weight": 0.70 },
-        { "signal": "tradeDeathRate", "weight": 0.30 }
+        { "signal": "tradeKillRate",                "weight": 0.55 },
+        { "signal": "tradeDeathRate",               "weight": 0.25 },
+        { "signal": "teammateAdvanceUnitsPerRound", "weight": 0.20 }
       ],
       "efficiency": [
         { "signal": "tradeKillRate",  "weight": 0.70 },
@@ -106,11 +109,14 @@
       "_desc": "开路尖刀，第一个趟。α=0.70 偏风格：敢不敢首先暴露 + 死了被补不白给。",
       "alpha": 0.70,
       "involvement": [
-        { "signal": "firstDeathRate",   "weight": 0.60 },
-        { "signal": "openingDuelRate",  "weight": 0.40 }
+        { "signal": "firstDeathRate",                    "weight": 0.45 },
+        { "signal": "openingDuelRate",                   "weight": 0.30 },
+        { "signal": "firstControlEventsPerRound",        "weight": 0.15 },
+        { "signal": "contestedFrontierControlSecondsPerRound", "weight": 0.10 }
       ],
       "efficiency": [
-        { "signal": "tradeDeathRate",   "weight": 1.0 }
+        { "signal": "tradeDeathRate",        "weight": 0.60 },
+        { "signal": "routeDenialSecondsPerRound", "weight": 0.40 }
       ]
     }
   }

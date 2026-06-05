@@ -1,6 +1,6 @@
 {
-  "version": "rr-1.0",
-  "description": "RR Layer 1 基础权重。基于 HLTV 2.0 社区逆向公式（R²≈0.995）。eco 乘子全为 1.0（待 ~50 张图校准后激活）。Layer 2 关闭（待 ~1000 张图）。",
+  "version": "hltv-2-baseline-1.0",
+  "description": "HLTV 2.0 baseline 权重。基于 HLTV 2.0 社区逆向公式（R²≈0.995），作为 RR 主模型的盒分对照组。eco 乘子全为 1.0（待样本校准后激活）；Round Swing / WPA 关闭。",
 
   "base": {
     "_comment": "公式: kastCoef·KAST + kprCoef·KPR + dprCoef·DPR + impactCoef·Impact + adrCoef·ADR + intercept",
@@ -25,7 +25,7 @@
 
   "layer2": {
     "roundSwingCoef": 0.0,
-    "note": "Layer 2 disabled — 需要 ~1000 张图训好模型后开启。届时升版本到 rr-2.0。"
+    "note": "Round Swing / WPA disabled — 需要足量样本训好模型后再作为诊断能力开启。"
   },
 
   "clamp": {
