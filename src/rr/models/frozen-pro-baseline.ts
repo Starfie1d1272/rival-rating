@@ -95,7 +95,10 @@ export function computeFrozenProBaselineRR(
 
   return {
     steamId64: sig.steamId64,
-    rr: Math.max(baseline.clamp.min, baseline.anchor + baseline.scale * composite),
+    rr: Math.max(
+      baseline.clamp.min,
+      Math.min(baseline.clamp.max, baseline.anchor + baseline.scale * composite),
+    ),
     rrRaw: composite,
     accounts,
   };

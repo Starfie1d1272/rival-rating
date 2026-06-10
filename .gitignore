@@ -4,3 +4,4 @@ dist/
 .omc/
 .pnpm-store/
 docs/superpowers/plans/
+.codegraph/

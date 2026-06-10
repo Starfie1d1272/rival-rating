@@ -4,6 +4,10 @@ import type { RRSixAccountWeights, RRSignals } from "../../types/accounts.js";
 import weightsJson from "../../weights/rr-six-accounts-v1.json" with { type: "json" };
 
 const weights = weightsJson as unknown as RRSixAccountWeights;
+const mapControlEnabledWeights: RRSixAccountWeights = {
+  ...weights,
+  accountWeights: { ...weights.accountWeights, mapControl: 0.2 },
+};
 
 function makeSignals(overrides: Partial<RRSignals> = {}): RRSignals {
   const rounds = 100;
@@ -76,7 +80,7 @@ describe("computeRRSixAccounts", () => {
         teammateAdvanceUnits: 0,
         firstControlEvents: 0,
       },
-    }), weights);
+    }), mapControlEnabledWeights);
     const high = computeRRSixAccounts(makeSignals({
       mapControl: {
         uniqueStrategicControlSeconds: 200,
@@ -85,7 +89,7 @@ describe("computeRRSixAccounts", () => {
         teammateAdvanceUnits: 300,
         firstControlEvents: 25,
       },
-    }), weights);
+    }), mapControlEnabledWeights);
 
     expect(high.accounts.mapControl).toBeGreaterThan(low.accounts.mapControl);
     expect(high.rrRaw).toBeGreaterThan(low.rrRaw);

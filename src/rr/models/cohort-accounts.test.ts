@@ -4,6 +4,10 @@ import type { RRSixAccountWeights, RRSignals } from "../../types/accounts.js";
 import weightsJson from "../../weights/rr-six-accounts-v1.json" with { type: "json" };
 
 const weights = weightsJson as unknown as RRSixAccountWeights;
+const mapControlEnabledWeights: RRSixAccountWeights = {
+  ...weights,
+  accountWeights: { ...weights.accountWeights, mapControl: 0.2 },
+};
 
 function makePlayer(
   id: string,
@@ -107,7 +111,7 @@ describe("computeCohortAccountsRR", () => {
       makePlayer("x", { kills: 170, damage: 19000, mapControl: 100 }),
       makePlayer("y", { kills: 100, damage: 12000, mapControl: 220 }),
     ];
-    const out = computeCohortAccountsRR(cohort, weights);
+    const out = computeCohortAccountsRR(cohort, mapControlEnabledWeights);
     const acc = new Map(out.map((r) => [r.steamId64, r.accounts]));
     expect(acc.get("high")!.mapControl).toBeGreaterThan(acc.get("low")!.mapControl);
   });

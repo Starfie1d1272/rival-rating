@@ -10,7 +10,7 @@
   "accountWeights": {
     "combat": 1.0,
     "trade": 0.40,
-    "mapControl": 0.20,
+    "mapControl": 0.00,
     "utility": 0.25,
     "clutch": 0.30,
     "objective": 0.10
@@ -106,6 +106,6 @@
 
   "anchor": {
     "mode": "frozen_pro_baseline",
-    "note": "score.base=1.00 是职业基准语义；固定职业基准 normalizer 负责冻结 mean/std/slope/scale。产品层如需本地相对分，应另算 relativeRR。"
+    "note": "score.base=1.00 是职业基准语义；固定职业基准 normalizer 负责冻结 mean/std/slope/scale。MapControl 当前保持 shadow 权重 0.00，等待上游 official fields 稳定后再 ramp。产品层如需本地相对分，应另算 relativeRR。"
   }
 }

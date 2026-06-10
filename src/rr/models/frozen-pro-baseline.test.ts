@@ -114,6 +114,14 @@ describe("computeFrozenProBaselineRR", () => {
     expect(out.rr).toBeGreaterThanOrEqual(weights.clamp.min);
   });
 
+  it("respects the clamp ceiling for far-above-baseline play", () => {
+    const ref = makePlayer("ref", { kills: 30, deaths: 170, damage: 4000 });
+    const baseline = baselineCenteredOn(ref, { scale: 10 });
+    const strong = makePlayer("strong", { kills: 260, deaths: 60, damage: 30000 });
+    const out = computeFrozenProBaselineRR(strong, weights, baseline);
+    expect(out.rr).toBeLessThanOrEqual(weights.clamp.max);
+  });
+
   it("breakdown sums to (rr - anchor)", () => {
     const ref = makePlayer("ref");
     const baseline = baselineCenteredOn(ref);

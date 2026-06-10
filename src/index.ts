@@ -73,4 +73,5 @@ export { extractAxisScore } from "./prism/extract.js";
 // 不在此处强标 RRWeights/PrismWeights（避免 anchor.mode 等 union 收窄摩擦）。
 export { default as hltv2BaselineWeightsV1 } from "./weights/hltv-2-baseline-v1.json" with { type: "json" };
 export { default as rrSixAccountWeightsV1 } from "./weights/rr-six-accounts-v1.json" with { type: "json" };
+export { default as rrSixAccountProBaselineV0 } from "./weights/rr-six-account-pro-baseline-v0.json" with { type: "json" };
 export { default as prismWeightsV1 } from "./weights/prism-v1.json" with { type: "json" };

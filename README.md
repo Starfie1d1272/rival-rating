@@ -31,6 +31,7 @@ import {
   computeRRSixAccounts,         // RR 六账户主模型
   computeCohortAccountsRR,
   computeFrozenProBaselineRR,
+  rrSixAccountProBaselineV0,    // provisional 52-ZIP职业基准
   computePrism,
 } from "@rivalhub/rival-rating";
 ```
@@ -72,7 +73,7 @@ rival-rating
 |---|---:|---|
 | Combat | 1.00 | 武器击杀、武器伤害、死亡、首杀、多杀、劣势击杀 |
 | Trade | 0.45 | 补枪、被补、有效未交易死亡惩罚 |
-| MapControl | 0.25 | 站位/枪线创造的独占空间、路线封锁、队友推进 |
+| MapControl | 0.00 | 当前保持 shadow；上游 official fields 稳定后再 ramp |
 | Utility | 0.30 | 闪、烟、火等道具创造的空间/压制/伤害 |
 | Clutch | 0.35 | 1vX 残局胜负超出静态期望 |
 | Objective | 0.15 | 下包、拆包、下包转化 |
@@ -88,8 +89,8 @@ rival-rating
 | HLTV 2.0 baseline (`computeRR`) | ✅ 已实现 |
 | 六账户 RR (`computeRRSixAccounts`) | ✅ 已实现 |
 | cohort 标准化 + Combat 残差化 | ✅ 已实现 |
-| frozen pro baseline | ✅ 已有雏形 |
-| MapControl / UtilitySpatial 输入契约 | ✅ 已实现，事实信号由 `cs2-demo-analysis-kit` 派生 |
+| frozen pro baseline | ✅ 已有 52 ZIP provisional v0 |
+| MapControl / UtilitySpatial 输入契约 | ✅ 已实现；默认权重保持 shadow，事实信号由 `cs2-demo-analysis-kit` 派生 |
 | RR 六账户权重 JSON | ✅ 已实现 |
 
 ## PRISM 八维
