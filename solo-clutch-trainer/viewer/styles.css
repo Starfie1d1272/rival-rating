@@ -1,0 +1,274 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: #171918;
+  color: #f0f4ef;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.shell {
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.toolbar {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 0 auto 16px;
+  max-width: 1240px;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+p {
+  color: #aab6ad;
+  margin-top: 4px;
+}
+
+code {
+  color: #b8dbff;
+}
+
+.file-button,
+button {
+  background: #f0f4ef;
+  border: 1px solid #f0f4ef;
+  color: #171918;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  padding: 10px 14px;
+}
+
+.file-button input {
+  display: none;
+}
+
+.viewer {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  margin: 0 auto;
+  max-width: 1320px;
+}
+
+.map-stage {
+  min-width: 0;
+}
+
+.trace-meta {
+  align-items: center;
+  background: #20231f;
+  border: 1px solid #3c443d;
+  border-bottom: 0;
+  color: #d7dfd9;
+  display: grid;
+  gap: 8px 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  line-height: 1.3;
+  min-height: 54px;
+  padding: 10px 12px;
+}
+
+.meta-item {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.meta-item strong {
+  color: #f0f4ef;
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0;
+  margin-bottom: 2px;
+  text-transform: uppercase;
+}
+
+canvas {
+  background: #242823;
+  border: 1px solid #3c443d;
+  display: block;
+  min-height: 420px;
+  width: 100%;
+}
+
+.panel {
+  background: #20231f;
+  border: 1px solid #3c443d;
+  padding: 16px;
+}
+
+.metric {
+  border-bottom: 1px solid #343b35;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.side-picker,
+.metric span {
+  color: #aab6ad;
+}
+
+.side-picker {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr 1fr;
+  margin: 12px 0;
+}
+
+.side-picker button.active {
+  background: #78b7ff;
+  border-color: #78b7ff;
+}
+
+.field {
+  color: #aab6ad;
+  display: grid;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.checkpoint-fields[hidden] {
+  display: none;
+}
+
+.field input,
+.field select {
+  background: #171918;
+  border: 1px solid #3c443d;
+  color: #f0f4ef;
+  font: inherit;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.check-field {
+  align-items: center;
+  color: #d7dfd9;
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.primary-action {
+  margin-top: 12px;
+  width: 100%;
+}
+
+.status-line {
+  border-bottom: 1px solid #343b35;
+  color: #aab6ad;
+  font-size: 13px;
+  margin: 8px 0 6px;
+  min-height: 20px;
+  padding-bottom: 12px;
+}
+
+#scrubber {
+  margin: 18px 0 12px;
+  width: 100%;
+}
+
+.buttons {
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+button {
+  padding: 8px 10px;
+}
+
+.speed-control {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: auto minmax(0, 1fr);
+  margin-top: 10px;
+}
+
+.speed-control > span {
+  color: #aab6ad;
+}
+
+.speed-options {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.speed-options button {
+  background: #171918;
+  border-color: #3c443d;
+  color: #d7dfd9;
+  padding: 7px 6px;
+}
+
+.speed-options button.active {
+  background: #78b7ff;
+  border-color: #78b7ff;
+  color: #171918;
+}
+
+h2 {
+  font-size: 16px;
+  margin-top: 18px;
+}
+
+ol {
+  counter-reset: event;
+  color: #d7dfd9;
+  line-height: 1.4;
+  list-style: none;
+  margin: 10px 0 0;
+  max-height: 260px;
+  overflow: auto;
+  padding-left: 0;
+}
+
+li {
+  counter-increment: event;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 5ch minmax(0, 1fr);
+  margin-bottom: 6px;
+}
+
+li::before {
+  color: #aab6ad;
+  content: counter(event) ".";
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+
+@media (max-width: 860px) {
+  .toolbar,
+  .viewer {
+    grid-template-columns: 1fr;
+  }
+
+  .trace-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}

@@ -10,3 +10,6 @@ __pycache__/
 .pnpm-store/
 docs/superpowers/plans/
 .demo-cache/
+.solo-clutch-runs/
+.solo-clutch-cache/
+.matplotlib-cache/

@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Solo Clutch Trace Viewer</title>
+    <link rel="stylesheet" href="./styles.css?v=6" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="toolbar">
+        <div>
+          <h1>Solo Clutch Trace Viewer</h1>
+          <p>Dust2 1v1 scenario editor and trace replay.</p>
+        </div>
+        <label class="file-button">
+          Load Trace
+          <input id="traceFile" type="file" accept="application/json,.json" />
+        </label>
+      </section>
+
+      <section class="viewer">
+        <section class="map-stage">
+          <div id="traceMeta" class="trace-meta" aria-live="polite">
+            <span>Load or run a trace.</span>
+          </div>
+          <canvas id="traceCanvas" width="960" height="620"></canvas>
+        </section>
+        <aside class="panel">
+          <h2>Scenario</h2>
+          <div class="side-picker" role="group" aria-label="Select side to place">
+            <button id="placeTButton" type="button" class="active">Place T</button>
+            <button id="placeCTButton" type="button">Place CT</button>
+          </div>
+          <div class="metric">
+            <span>T Area</span>
+            <strong id="tAreaLabel">-</strong>
+          </div>
+          <div class="metric">
+            <span>CT Area</span>
+            <strong id="ctAreaLabel">-</strong>
+          </div>
+          <label class="field">
+            <span>Engine</span>
+            <select id="engineSelect">
+              <option value="rl-c-candidate">Phase C Candidate</option>
+              <option value="rl-c-stable">Phase C Stable</option>
+              <option value="rl-b">Phase B RL Stable</option>
+              <option value="rl-b-candidate">Phase B RL Candidate</option>
+              <option value="rl-a">Phase A RL</option>
+              <option value="rules">Rules</option>
+            </select>
+          </label>
+          <div id="phaseCCheckpointFields" class="checkpoint-fields">
+            <label class="field">
+              <span>T Checkpoint</span>
+              <input id="phaseCTCheckpoint" type="text" placeholder="Default Phase C T checkpoint" />
+            </label>
+            <label class="field">
+              <span>CT Checkpoint</span>
+              <input id="phaseCCTCheckpoint" type="text" placeholder="Default Phase C CT checkpoint" />
+            </label>
+          </div>
+          <label id="siteField" class="field">
+            <span>Site</span>
+            <select id="siteSelect">
+              <option value="auto">Auto</option>
+              <option value="A">A</option>
+              <option value="B">B</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>Bomb</span>
+            <select id="bombStateSelect">
+              <option value="unplanted">Unplanted</option>
+              <option value="planted_a">Planted A</option>
+              <option value="planted_b">Planted B</option>
+            </select>
+          </label>
+          <label class="check-field">
+            <input id="staticLosCheck" type="checkbox" checked />
+            <span>3D LOS</span>
+          </label>
+          <label class="field">
+            <span>Seed</span>
+            <input id="seedInput" type="number" value="2607" />
+          </label>
+          <button id="runButton" type="button" class="primary-action">Run Simulation</button>
+          <p id="scenarioStatus" class="status-line">Ready</p>
+
+          <div class="metric">
+            <span>Frame</span>
+            <strong id="frameLabel">0 / 0</strong>
+          </div>
+          <div class="metric">
+            <span>Winner</span>
+            <strong id="winnerLabel">-</strong>
+          </div>
+          <div class="metric">
+            <span>Terminal</span>
+            <strong id="valueLabel">-</strong>
+          </div>
+          <input id="scrubber" type="range" min="0" max="0" value="0" />
+          <div class="buttons">
+            <button id="prevButton" type="button">Prev</button>
+            <button id="playButton" type="button">Play</button>
+            <button id="nextButton" type="button">Next</button>
+          </div>
+          <div class="speed-control" role="group" aria-label="Playback speed">
+            <span>Speed</span>
+            <div class="speed-options">
+              <button type="button" data-speed="0.5">0.5x</button>
+              <button type="button" data-speed="1" class="active">1x</button>
+              <button type="button" data-speed="2">2x</button>
+              <button type="button" data-speed="4">4x</button>
+            </div>
+          </div>
+          <h2>Events</h2>
+          <ol id="eventList"></ol>
+        </aside>
+      </section>
+    </main>
+    <script type="module" src="./app.js?v=17"></script>
+  </body>
+</html>

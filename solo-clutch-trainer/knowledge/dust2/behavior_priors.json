@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "dust2-behavior-priors-0.1",
+  "observedKnowledge": {
+    "source": "observed_demo",
+    "status": "empty",
+    "items": [],
+    "intendedUse": "Demo-mined routes, aim anchors, pauses, plant spots, post-plant holds, and retake sequences should be added here with support counts and confidence."
+  },
+  "normativeConstraints": [
+    {
+      "id": "legal_nav_positions_only",
+      "source": "normative_seed",
+      "confidence": 0.95,
+      "purpose": "legality_filter",
+      "description": "Agents must start and move on legal map nav areas."
+    },
+    {
+      "id": "movement_physics_bounds",
+      "source": "normative_seed",
+      "confidence": 0.75,
+      "purpose": "realism_filter",
+      "description": "Run speed, walk speed, jump-up, step-up, and drop thresholds bound movement without prescribing tactics."
+    },
+    {
+      "id": "plausible_aim_reference_required",
+      "source": "normative_seed",
+      "confidence": 0.65,
+      "purpose": "realism_filter",
+      "description": "Aim should reference enemy, last-seen, contact, route, site, bomb, or retake state instead of arbitrary wall directions."
+    },
+    {
+      "id": "bomb_rules_have_winner",
+      "source": "normative_seed",
+      "confidence": 0.9,
+      "purpose": "game_rule_filter",
+      "description": "Bomb scenarios must terminate with T or CT through plant, defuse, timeout, explosion, or elimination rules."
+    }
+  ],
+  "policy": {
+    "normativeUse": "Normative entries may reject impossible or obviously non-realistic behavior; they must not be treated as a unique correct tactical style.",
+    "overrideRule": "Observed demo knowledge with sufficient support should override normative seed priors for style, route, aim, and timing choices."
+  }
+}
