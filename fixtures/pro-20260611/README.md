@@ -30,8 +30,9 @@ baseline freeze.
   - `positions-1s.json` contains `lastPlaceName`, which the current strict schema rejects.
   - `replay.json` contains `projectiles`, which the current strict schema rejects.
 
-The snapshot is a historical v2-format export; this snapshot should not be
-interpreted as the current v3 contract fixture set. The ZIPs are usable for
-current DAK/RR scoring and calibration, but should not be treated as
-release-clean strict contract fixtures until the exporter/schema boundary is
-reconciled.
+This snapshot is a historical v2-format export. It is retained for
+provenance and reproducibility of the current provisional-v0 professional
+baseline and should not be interpreted as the current v3 contract fixture
+set. No claim is made that the current DAK runtime can consume these v2
+packages directly; reprocessing them would require a historical
+v2-compatible processing path.
