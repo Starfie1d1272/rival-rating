@@ -3,7 +3,7 @@
 > **RR** 透明六账户评分 + **PRISM** 八维风格画像。
 > 一个无框架依赖、无副作用的 CS2 选手评分计算库。
 
-[![version](https://img.shields.io/badge/version-0.2.0-orange)](./package.json)
+[![version](https://img.shields.io/badge/version-0.3.0-orange)](./package.json)
 [![status](https://img.shields.io/badge/weights-prior-yellow)](./docs/rr.md#六账户与先验权重)
 
 ## 这是什么
@@ -72,11 +72,11 @@ rival-rating
 | 账户 | 先验权重 | 说明 |
 |---|---:|---|
 | Combat | 1.00 | 武器击杀、武器伤害、死亡、首杀、多杀、劣势击杀 |
-| Trade | 0.45 | 补枪、被补、有效未交易死亡惩罚 |
+| Trade | 0.40 | 补枪、被补、有效未交易死亡惩罚 |
 | MapControl | 0.00 | 当前保持 shadow；上游 official fields 稳定后再 ramp |
-| Utility | 0.30 | 闪、烟、火等道具创造的空间/压制/伤害 |
-| Clutch | 0.35 | 1vX 残局胜负超出静态期望 |
-| Objective | 0.15 | 下包、拆包、下包转化 |
+| Utility | 0.25 | 闪、烟、火等道具创造的空间/压制/伤害 |
+| Clutch | 0.30 | 1vX 残局胜负超出静态期望 |
+| Objective | 0.10 | 下包、拆包、下包转化 |
 
 这些是人工先验，不是监督学习直接拟合结果。职业样本负责标准化和残差化；胜率模型只做验证/校准。
 当前 `rr-six-accounts-v1.json` 是第一轮保守先验：非 Combat 账户权重已下调，MapControl / Utility
@@ -124,3 +124,9 @@ pnpm typecheck
 | `cs2-demo-analysis-kit` | 从 demo / ZIP 派生 RR 所需事实信号 |
 | `rival-rating` | 账户契约、先验权重、标准化/残差化、RR/PRISM 计算 |
 | RivalHub / 其他产品 | 展示、身份归并、赛季上下文、友好化解释 |
+
+## License
+
+MIT for source code and documentation authored in this repository.
+
+The calibration artifacts under `fixtures/pro-20260611/` retain their stated provenance; this license statement does not assert rights over underlying third-party match/demo data.

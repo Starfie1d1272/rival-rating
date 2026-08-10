@@ -1,8 +1,13 @@
 # Pro Fixture Set 2026-06-11
 
-Current local pro-demo calibration set generated from:
+This directory records the 2026-06-11 calibration snapshot used by the current
+provisional-v0 professional baseline. The snapshot was generated from the
+data-contract/export path available at that time and is retained for
+provenance and reproducibility.
 
-`/Users/starfie1d/GitHub/cs2-demo-analysis-kit/fixtures/demos/pro`
+Generated from the professional-demo calibration corpus maintained in the
+sibling `cs2-demo-analysis-kit` workspace at the time of the 2026-06-11
+baseline freeze.
 
 ## Contents
 
@@ -25,4 +30,8 @@ Current local pro-demo calibration set generated from:
   - `positions-1s.json` contains `lastPlaceName`, which the current strict schema rejects.
   - `replay.json` contains `projectiles`, which the current strict schema rejects.
 
-These ZIPs are usable for current DAK/RR scoring and calibration, but should not be treated as release-clean strict contract fixtures until the exporter/schema boundary is reconciled.
+The snapshot is a historical v2-format export; this snapshot should not be
+interpreted as the current v3 contract fixture set. The ZIPs are usable for
+current DAK/RR scoring and calibration, but should not be treated as
+release-clean strict contract fixtures until the exporter/schema boundary is
+reconciled.
