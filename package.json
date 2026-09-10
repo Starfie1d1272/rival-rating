@@ -20,7 +20,7 @@
   "devDependencies": {
     "@changesets/cli": "^2.31.0",
     "typescript": "^5.4.0",
-    "vitest": "^3.2.6"
+    "vitest": "^4.1.11"
   },
   "files": [
     "src",
