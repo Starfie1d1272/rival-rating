@@ -47,3 +47,9 @@ This file provides guidance to Codex when working in this repository.
 - RR 主实现是 `src/rr/models/six-accounts.ts`；不要恢复旧 `value-accounts-v2-lite` 命名。
 - `package.json` exports 直接指向 `src/index.ts` 和 `src/weights/*`；改导出面时要同步检查消费方。
 - 新增未追踪文件不会出现在普通 `git diff -- <path>` 里；清理或提交前用 `git status --short --untracked-files=all` 复核。
+
+## 依赖安装与更新
+
+依赖维护遵循 [`docs/dependency-maintenance.md`](docs/dependency-maintenance.md)。使用 manifest 指定的 pnpm，日常冻结安装，版本更新时自动生成锁文件；不要手改锁文件或恢复旧文件掩盖依赖变化。
+
+云环境中如存在 `/workspace/.onboarding/activate.sh`，每个 shell 执行仓库命令前先 source 该文件，以选择可写缓存和 manifest 对应的包管理器。
