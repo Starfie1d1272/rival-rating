@@ -11,7 +11,7 @@ from tools.offline_rating.pipeline_cli import main
 
 class PipelineTests(unittest.TestCase):
  def setUp(self):
-  self.p=loads(PACKAGE.read_text());self.r=sample();self.r.update(rid='fixture-round',group='synthetic',mapName='de_inferno')
+  self.p=loads(PACKAGE.read_text());self.r=sample();self.r.update(rid='fixture-round',group='synthetic',mapName='de_inferno',sourceCoverage={'killSlots':'complete','events':'complete'})
   for f in self.r['facts'].values(): f['utility'].update(heDamage=0,fireDamage=0)
  def test_round_to_accounts_and_reference_join(self):
   ledger=score_round(self.p,'website_common_full',self.r,[]); rows=aggregate([ledger],{(self.r['map'],str(i)):('season',str(i)) for i in range(10)})
@@ -48,3 +48,37 @@ class DifferenceTests(unittest.TestCase):
   records=registry('website',{'aggregates':rows},batch,[],[],identities)
   self.assertEqual(len(records),20);self.assertAlmostEqual(records[0]['H2_public_formula']['value'],.791448)
   self.assertEqual(records[0]['unexplained_external_residual']['H2_community_linear_v1']['status'],'algebraically_specified_difference')
+
+class CoverageTests(unittest.TestCase):
+ def test_missing_duplicate_extra_and_outside_kills(self):
+  case=PipelineTests();case.setUp();r=case.r;p=case.p
+  bad=copy.deepcopy(r);del bad['sourceCoverage']
+  with self.assertRaises(ValueError):score_round(p,'website_common_full',bad,[])
+  kill={'kind':'kill','actor':'0','victim':'5','index':0,'tick':50,'round':1}
+  e={'tick':50,'before':[5,5,0,0,0,.5,.5,.5,.5],'events':[kill],'terminalAfter':None}
+  with self.assertRaises(ValueError):score_round(p,'website_common_full',r,[e])
+  r['killSlots']=[{'tick':50,'actor':'0','victim':'5'}]
+  with self.assertRaises(ValueError):score_round(p,'website_common_full',r,[{**e,'events':[kill,dict(kill)]}])
+  with self.assertRaises(ValueError):score_round(p,'website_common_full',r,[{**e,'tick':101}])
+  r['killSlots']=[];r['facts']['0']['damage']=100
+  with self.assertRaises(ValueError):score_round(p,'website_common_full',r,[])
+ def test_duplicate_ledger_rejected(self):
+  case=PipelineTests();case.setUp();ledger=score_round(case.p,'website_common_full',case.r,[])
+  with self.assertRaises(ValueError):aggregate([ledger,ledger],{})
+  with tempfile.TemporaryDirectory() as d:
+   rich={**ledger,'mode':'professional_rich_diagnostic'};path=Path(d)/'rich.jsonl';line=json.dumps(rich)+'\n';path.write_text(line+line)
+   with self.assertRaises(ValueError):replay_rich(path,hashlib.sha256(path.read_bytes()).hexdigest())
+
+class AdapterTests(unittest.TestCase):
+ def test_missing_coverage_and_duplicate_round(self):
+  from tools.offline_rating.adapters import adapt
+  case=PipelineTests();case.setUp();r=case.r;r['source']='website'
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d)
+   def inventory(rounds,coverage):
+    datasets={'rounds':rounds,'events':[],'playerRounds':[],'kills':[],'coverage':coverage};out={}
+    for key,values in datasets.items():
+     path=root/(key+'.json');path.write_text(json.dumps(values));out[key]={'path':str(path),'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+    return out
+   with self.assertRaises(ValueError):adapt(inventory([r],[]),'website')
+   with self.assertRaises(ValueError):adapt(inventory([r,r],[{'rid':r['rid'],'events':'complete','killSlots':'complete'}]),'website')

@@ -2,6 +2,7 @@
 import hashlib
 import json
 import math
+from collections import Counter
 from collections import defaultdict
 from .contracts import validate_round, number
 from .features import hp, hp_dose, life, doses
@@ -28,6 +29,23 @@ def route(package, mode, group):
 def score_round(package, mode, r, events):
     if mode not in MODES: raise ValueError('unknown mode')
     validate_round(r)
+    coverage=r.get('sourceCoverage')
+    if coverage != {'killSlots':'complete','events':'complete'}: raise ValueError('explicit source coverage required')
+    source=[]
+    for k in r['killSlots']:
+        key=(k['tick'],k.get('actor'),k['victim'])
+        if key in source: raise ValueError('duplicate source kill slot')
+        source.append(key)
+    active=Counter(key for key in source if r['freeze']<=key[0]<=r['end'])
+    observed=[]
+    for e in events:
+        tick=number(e['tick'],'event tick',0)
+        if not r['freeze']<=tick<=r['end']: raise ValueError('event outside round')
+        for event in e['events']:
+            if event['kind']=='kill': observed.append((tick,event.get('actor'),event.get('victim')))
+    if len(observed)!=len(set(observed)) or Counter(observed)!=active: raise ValueError('kill events and source slots differ')
+    if any(r['facts'][s]['kills']>sum(k[1]==s for k in source) for s in r['facts']): raise ValueError('kills facts exceed source slots')
+    if any(f['damage']>0 for f in r['facts'].values()) and not events: raise ValueError('damage facts without event coverage')
     if any(k in r for k in ('RatingPro','HLTV','H2','reference')): raise ValueError('external reference forbidden in scoring input')
     for k in ('rid','group','mapName'):
         if k not in r: raise ValueError('missing '+k)
@@ -103,6 +121,14 @@ def accounts(c):
     return {'Combat':c['weaponHP']+c['killLife']+c['deathLife'],'Trade':c['tradeRecovery'],'MapControl':0.,'Utility':c['utilityHP']+c['flash']+c['friendlyFlash'],'Clutch':c['clutchGain']+c['clutchLoss'],'Objective':c['plant']+c['defuse']}
 
 def aggregate(ledgers, identity_map=None):
+    if not ledgers: raise ValueError('empty ledger')
+    ids=[(ledger.get('mode',ledger.get('pricingMode')),ledger['rid']) for ledger in ledgers]
+    if len(ids)!=len(set(ids)): raise ValueError('duplicate ledger identity')
+    for ledger in ledgers:
+        if not isinstance(ledger.get('components'),dict) or len(ledger['components'])!=10: raise ValueError('ledger must contain ten players')
+        for c in ledger['components'].values():
+            if set(c)!=set(COMPONENTS) or any(isinstance(v,bool) or not isinstance(v,(float,int)) or not math.isfinite(v) for v in c.values()): raise ValueError('invalid ledger components')
+        if abs(sum(sum(c.values()) for c in ledger['components'].values()))>1e-10: raise ValueError('ledger center mismatch')
     buckets={}
     for ledger in ledgers:
         for player,c in ledger['components'].items():
@@ -134,4 +160,6 @@ def replay_rich(path, expected_hash):
     if hashlib.sha256(data).hexdigest()!=expected_hash: raise ValueError('rich ledger hash mismatch')
     rows=[json.loads(line) for line in data.splitlines() if line.strip()]
     if not rows or any(r.get('pricingMode',r.get('mode'))!='professional_rich_diagnostic' for r in rows): raise ValueError('invalid rich diagnostic ledger')
+    ids=[r['rid'] for r in rows]
+    if len(ids)!=len(set(ids)): raise ValueError('duplicate rich ledger identity')
     return rows

@@ -16,7 +16,7 @@ def lines(path):
 
 def adapt(inventory, domain):
     if domain not in ('website','professional'): raise ValueError('unknown domain')
-    required={'rounds','events','playerRounds','kills'}
+    required={'rounds','events','playerRounds','kills','coverage'}
     if set(inventory)!=required: raise ValueError('inventory roles must be rounds, events, playerRounds, kills')
     data={}
     for role,entry in inventory.items():
@@ -24,7 +24,12 @@ def adapt(inventory, domain):
         if sha256(path)!=digest: raise ValueError('source hash mismatch: '+role)
         data[role]=lines(path) if entry.get('format')=='jsonl' else read(path)
     keep='website' if domain=='website' else 'cologne'
-    rounds={r['rid']:r for r in data['rounds'] if r['source']==keep}
+    selected=[r for r in data['rounds'] if r['source']==keep]
+    rounds={r['rid']:r for r in selected}
+    if len(rounds)!=len(selected): raise ValueError('duplicate round ID')
+    coverage={v['rid']:v for v in data['coverage']}
+    if len(coverage)!=len(data['coverage']) or set(coverage)!=set(rounds): raise ValueError('coverage must uniquely list each round')
+    if any(set(v)!={'rid','killSlots','events'} or v['killSlots']!='complete' or v['events']!='complete' for v in coverage.values()): raise ValueError('source coverage incomplete')
     if not rounds: raise ValueError('no matching rounds')
     events=defaultdict(list)
     for e in data['events']:
@@ -51,7 +56,7 @@ def adapt(inventory, domain):
                 for v in page['kills']:ks[(page['map'],v['round'])].append(v)
     result=[]
     for r in rounds.values():
-        r=dict(r); r['killSlots']=sorted(ks.get((r['map'],r['round']),[]),key=lambda k:k['tick'])
+        r=dict(r); r['sourceCoverage']={'killSlots':'complete','events':'complete'}; r['killSlots']=sorted(ks.get((r['map'],r['round']),[]),key=lambda k:k['tick'])
         r['facts']={p['steam']:prs[(r['map'],r['round'],p['steam'])] for p in r['players']}
         result.append({'round':r,'events':events[r['rid']]})
     return {'schema':'rr-offline-round-batch-v1','rounds':result}

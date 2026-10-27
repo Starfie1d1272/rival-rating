@@ -48,7 +48,7 @@ def main(argv=None):
                 identities[key]=(entry['season'],entry['userId'])
         result=aggregate(ledgers,identities)
         differences=None if a.references is None else compare_after_scoring(result,read_json(a.references))
-        payload={'schema':'rr-offline-report-v1','mode':a.mode,'inputSHA256':a.input_sha256,'parameterSHA256':a.parameters_sha256,'identitySHA256':a.identity_sha256,'referenceSHA256':None if a.references is None else sha256(a.references),'ledgers':ledgers,'aggregates':result,'differences':differences,'limitations':['same-tick order unknown','HP snapshot conflicts unresolved','objective sensitivity unresolved','label origin unverified','external residual unexplained']}
+        payload={'schema':'rr-offline-report-v1','mode':a.mode,'executionKind':'hash_verified_ledger_replay' if a.mode=='professional_rich_diagnostic' else 'public_head_pricing','parametersUsedForPricing':a.mode!='professional_rich_diagnostic','inputSHA256':a.input_sha256,'parameterSHA256':a.parameters_sha256,'identitySHA256':a.identity_sha256,'referenceSHA256':None if a.references is None else sha256(a.references),'ledgers':ledgers,'aggregates':result,'differences':differences,'limitations':['same-tick order unknown','HP snapshot conflicts unresolved','objective sensitivity unresolved','label origin unverified','external residual unexplained']}
         a.output.write_text(json.dumps(payload,ensure_ascii=False,allow_nan=False,indent=2)+'\n')
         return 0
     except (OSError,ValueError,TypeError,KeyError,OverflowError) as e:

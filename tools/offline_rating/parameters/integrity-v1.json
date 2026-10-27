@@ -1,7 +1,7 @@
 {
   "tools/offline_rating/__init__.py": "c3ccabe8f5a841e025433b811b355b9e04f2be0fca14c22551ea9a38ef9d6f26",
   "tools/offline_rating/__main__.py": "bb976586fc5c4f7fe3068ba193ef61ffb883dc1c90e4dfcfe615f0c4d355ebc8",
-  "tools/offline_rating/adapters.py": "7055d809845a6898cac4602b00ec5966f767441551d8ff6b7619e032445dc546",
+  "tools/offline_rating/adapters.py": "669a00abaf032b09469926d7d62db524c2e627a6537141180f90065e43660d10",
   "tools/offline_rating/contracts.py": "9d1ee73568ca8c860215903bd743aa752d3411483394f7463403185181a169c7",
   "tools/offline_rating/differences.py": "865062e022ab2b374b8d650ea7e2d09a9081a41f6596c4cc365beab0ec411638",
   "tools/offline_rating/differences_cli.py": "8e3c07d3e7107cc5ec32a8504c307bd2c5bb8f45b4b1b1493c23d214b142111d",
@@ -11,11 +11,12 @@
   "tools/offline_rating/heads.py": "18f7581586e543cbec4ffa1e5e4a44619fd990073b9f75295a1b188734e377f5",
   "tools/offline_rating/integrity.py": "76775b917eebf8f01edeec50b1e1f1f93de177225ee6cfe9ca379f98cdb5e266",
   "tools/offline_rating/objective_context.py": "e9afde7173bd207fc309ce1d3e3e613f7c91f2ac6387452103138d61916af5d3",
-  "tools/offline_rating/parameters/batch-v1.schema.json": "d89af59c77fc9f8082506afeefe473f361bfe835614509a4f9eedaad3108416d",
+  "tools/offline_rating/parameters/batch-v1.schema.json": "58510275eb6934c8dc8ce3bff60e79d00050b6a3d0cbfb000c4d21d036c36e1f",
   "tools/offline_rating/parameters/common-heads-v1.json": "575b87123da983b970db79dab7ac377b7fa06941f697b4a9aa1fdab7bb79bb3b",
   "tools/offline_rating/parameters/common-heads-v1.schema.json": "834dc165717441a2533626295e7aece02732a5ccf51a88452f575ac4641e59c3",
+  "tools/offline_rating/parameters/differences-v1.schema.json": "0a5ad02291c65ef77a048b22d49fb1bd992d941c424442f5eff6c9f87a694a48",
   "tools/offline_rating/parameters/round-v1.schema.json": "cdcd7a3878b2ca7023eae1e140db9b4376ba816df661adb6588b284ae52707c6",
-  "tools/offline_rating/pipeline.py": "6dbf0e2ffcd586fd37f92b66e656e2e5334fd878c038ae102667bb43b50efc42",
-  "tools/offline_rating/pipeline_cli.py": "c93e5166c6b021a5efcd6be6f2cfa73c21919dfa468042eff4a03e75e98481b9",
+  "tools/offline_rating/pipeline.py": "e4b771b0f7ce67a47dac9e54c67403b636eef17e462a00f77b3346f4cffa929c",
+  "tools/offline_rating/pipeline_cli.py": "9c27bf649e179189c1ccd5c445e911059fc3228044cbb82e4da48ded4380fcbd",
   "tools/offline_rating/tests/fixtures/synthetic-head-cases.json": "c415e50512a3145271d59cce71c458135292907d173c87751763554bafa39b3c"
 }
