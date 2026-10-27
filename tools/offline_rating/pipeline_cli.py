@@ -31,6 +31,9 @@ def main(argv=None):
                 from .adapters import adapt
                 source=adapt(source,'website' if a.mode=='website_common_full' else 'professional')
             if source.get('schema')!='rr-offline-round-batch-v1' or not isinstance(source.get('rounds'),list) or not source['rounds']: raise ValueError('invalid or empty batch')
+            if a.mode=='professional_common_oof':
+                from .integrity import fold_evidence
+                fold_evidence(package, sorted({item['round']['group'] for item in source['rounds']}))
             ids=[item['round']['rid'] for item in source['rounds']]
             if len(ids)!=len(set(ids)): raise ValueError('duplicate round ID')
             ledgers=[score_round(package,a.mode,item['round'],item['events']) for item in source['rounds']]

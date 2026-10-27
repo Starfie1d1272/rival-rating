@@ -12,7 +12,7 @@ python3 -m tools.offline_rating integrity . tools/offline_rating/parameters/inte
 python3 -m tools.offline_rating validate tools/offline_rating/parameters/common-heads-v1.json
 ```
 
-`predict` requires `--input-sha256` for its parameter file, an ordered JSON feature array, map and kind; run `python3 -m tools.offline_rating predict --help`. Integrity hashes cover frozen public parameters, fixtures, schema and implementation; they detect changes relative to the reviewed manifest, not a malicious replacement of the manifest itself. For other frozen input files, provide an explicit path-to-SHA256 manifest to `integrity`. The fold check verifies saved metadata coverage and consistency, including filtered head subsets; it reports label origin unverified because metadata alone cannot prove the teacher training lineage. No original player data or external reference records are included.
+`predict` requires `--input-sha256` for its parameter file, an ordered JSON feature array, map and kind; run `python3 -m tools.offline_rating predict --help`. Integrity hashes cover frozen public parameters, fixtures, schema and implementation; they detect changes relative to the reviewed manifest, not a malicious replacement of the manifest itself. For other frozen input files, provide an explicit path-to-SHA256 manifest to `integrity`. The fold check reports internal consistency; independent expected-universe evidence is required to verify coverage and teacher label origin remains unverified. Objective contexts bind goal and round inputs, and reject duplicate source events and illegal target sides. No original player data or external reference records are included.
 
 ## Experimental ledger pipeline
 

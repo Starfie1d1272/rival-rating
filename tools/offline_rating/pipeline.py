@@ -20,7 +20,7 @@ def route(package, mode, group):
     if mode == 'website_common_full': return 'full'
     if mode != 'professional_common_oof': raise ValueError('rich mode requires frozen ledger replay')
     ev=fold_evidence(package)
-    if ev['routing'] != 'verified_metadata': raise ValueError('OOF routing unverified')
+    if ev['routing'] not in ('internally_consistent','verified_against_independent_universe'): raise ValueError('OOF routing unverified')
     matches=[str(f['fold']) for f in package['folds']['teacherOuter'] if group in f['validationGroups']]
     if len(matches)!=1: raise ValueError('series must have exactly one OOF fold')
     return matches[0]

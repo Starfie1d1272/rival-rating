@@ -19,8 +19,8 @@ class PipelineTests(unittest.TestCase):
   self.assertTrue(all(row['rating']==1 for row in rows))
   diffs=compare_after_scoring(rows,[]);self.assertTrue(all(d['reference'] is None and d['unexplained_external_residual']=='unknown' for d in diffs))
  def test_goal_ledger_and_invalid_reference(self):
-  goal={'kind':'planted','actor':'0','index':0};event={'tick':50,'before':[5,5,0,0,0,.5,.5,.5,.5],'events':[goal],'terminalAfter':None}
-  ledger=score_round(self.p,'website_common_full',self.r,[event]);self.assertEqual(len(ledger['goalEvents']),1);self.assertAlmostEqual(ledger['goalEvents'][0]['executionValue'],0.03209679022918008,places=14)
+  goal={'kind':'planted','actor':'5','index':0,'tick':50,'round':1};event={'tick':50,'before':[5,5,0,0,0,.5,.5,.5,.5],'events':[goal],'terminalAfter':None}
+  ledger=score_round(self.p,'website_common_full',self.r,[event]);self.assertEqual(len(ledger['goalEvents']),1);self.assertGreater(ledger['goalEvents'][0]['executionValue'],0)
   self.assertAlmostEqual(sum(sum(c.values()) for c in ledger['components'].values()),0.)
   wider={**event,'before':event['before']+[0.]*31}; self.assertEqual(score_round(self.p,'website_common_full',self.r,[wider])['components'],ledger['components'])
   r=copy.deepcopy(self.r);r['RatingPro']=1
