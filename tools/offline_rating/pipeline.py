@@ -102,11 +102,15 @@ def score_round(package, mode, r, events):
 def accounts(c):
     return {'Combat':c['weaponHP']+c['killLife']+c['deathLife'],'Trade':c['tradeRecovery'],'MapControl':0.,'Utility':c['utilityHP']+c['flash']+c['friendlyFlash'],'Clutch':c['clutchGain']+c['clutchLoss'],'Objective':c['plant']+c['defuse']}
 
-def aggregate(ledgers):
+def aggregate(ledgers, identity_map=None):
     buckets={}
     for ledger in ledgers:
         for player,c in ledger['components'].items():
-            for scope,key in [('map',(ledger['map'],player)),('player',(player,))]:
+            if ledger.get('mode',ledger.get('pricingMode')) == 'website_common_full':
+                if identity_map is None or (ledger['map'],player) not in identity_map: raise ValueError('missing website season/user identity')
+                identity=tuple(identity_map[(ledger['map'],player)])
+            else: identity=(player,)
+            for scope,key in [('map',(ledger['map'],player)),('player',identity)]:
                 row=buckets.setdefault((scope,key),{'scope':scope,'key':list(key),'rounds':0,'components':dict.fromkeys(COMPONENTS,0.),'evidence':[]})
                 row['rounds']+=1;row['evidence'].append({'rid':ledger['rid'],'ledgerSHA256':canonical_hash(ledger)})
                 for name in COMPONENTS: row['components'][name]+=c[name]
