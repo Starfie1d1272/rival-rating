@@ -46,9 +46,31 @@ def validate_event(r, e, goal, selected):
     if not r['freeze'] <= tick <= r['end']: raise ValueError('event outside live round')
     if not isinstance(e['before'], (list,tuple)) or len(e['before']) != 9: raise ValueError('before must have nine dimensions')
     for v in e['before']: number(v, 'before')
-    if not isinstance(e['events'], list) or goal not in e['events']: raise ValueError('goal must be an event in this tick')
-    if goal.get('kind') not in ('planted','defused'): raise ValueError('unknown goal')
-    if goal.get('actor') not in {p['steam'] for p in r['players']}: raise ValueError('unknown goal actor')
-    if len({id(k) for k in selected}) != len(selected) or any(k not in e['events'] or k.get('kind') != 'kill' for k in selected):
-        raise ValueError('selected kills must be distinct events in current tick')
+    events=e['events']
+    if not isinstance(events,list) or not events: raise ValueError('events must be a nonempty list')
+    players={p['steam']:p for p in r['players']}; keys=set(); killed=set()
+    for item in events:
+        if not isinstance(item,dict) or not isinstance(item.get('kind'),str): raise ValueError('invalid event')
+        index=item.get('index')
+        if isinstance(index,bool) or not isinstance(index,int) or index<0: raise ValueError('event source index required')
+        key=(item['kind'],index)
+        if key in keys: raise ValueError('duplicate source event')
+        keys.add(key)
+        if item.get('tick')!=tick or item.get('round')!=r['round']: raise ValueError('event outside atomic group')
+        if item['kind']=='kill':
+            if item.get('victim') not in players or (item.get('actor') is not None and item['actor'] not in players): raise ValueError('unknown kill identity')
+            if item['victim'] in killed: raise ValueError('duplicate same-tick victim')
+            killed.add(item['victim'])
+        if item['kind'] in ('planted','defused'):
+            actor=item.get('actor')
+            if actor not in players: raise ValueError('unknown goal actor')
+            side='t' if item['kind']=='planted' else 'ct'
+            if players[actor]['side']!=side: raise ValueError('illegal goal actor side')
+    if goal.get('kind') not in ('planted','defused') or sum(item==goal for item in events)!=1: raise ValueError('goal must identify exactly one source event')
+    selected_keys=[]
+    for item in selected:
+        key=(item.get('kind'),item.get('index'))
+        if item.get('kind')!='kill' or sum(event==item for event in events)!=1: raise ValueError('selected kill must identify one event in current tick')
+        selected_keys.append(key)
+    if len(set(selected_keys))!=len(selected_keys): raise ValueError('duplicate selected kill')
     return r

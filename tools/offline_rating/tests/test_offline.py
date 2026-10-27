@@ -7,7 +7,7 @@ from tools.offline_rating.contracts import validate_round
 from tools.offline_rating.evidence import check_derived_hurt_bookkeeping
 from tools.offline_rating.heads import infer, loads
 from tools.offline_rating.integrity import fold_evidence, verify_files
-from tools.offline_rating.objective_context import make_context, allocate_objective
+from tools.offline_rating.objective_context import make_context, allocate_objective, price_and_allocate
 
 ROOT=Path(__file__).resolve().parents[3]
 BASE=ROOT/'tools/offline_rating'
@@ -39,18 +39,36 @@ class OfflineTests(unittest.TestCase):
             if mutation=='nonfinite': r['players'][0]['startGear']=float('nan')
             with self.assertRaises((ValueError,KeyError)): validate_round(r)
     def test_objective_single_context_and_same_tick_unknown(self):
-        r=sample(); kill={'kind':'kill','actor':'5','victim':'1','index':0}; goal={'kind':'planted','actor':'0','index':0}
+        r=sample(); kill={'kind':'kill','actor':'0','victim':'6','index':0,'tick':50,'round':1}; goal={'kind':'planted','actor':'5','index':0,'tick':50,'round':1}
         e={'tick':50,'before':[5,5,0,0,0,0.5,0.5,0.5,0.5],'events':[kill,goal]}
         c=make_context(r,e,goal,'synthetic'); self.assertEqual(c.orderEvidence['crossTypeOrder'],'unknown')
         self.assertEqual(allocate_objective(0.5,c,r)['N'],5)
         hypothetical=make_context(r,e,goal,'synthetic',[kill]);self.assertEqual(allocate_objective(0.5,hypothetical,r)['N'],4)
         with self.assertRaises(ValueError): make_context(r,{**e,'tick':101},goal,'synthetic')
         with self.assertRaises(ValueError): make_context(r,e,goal,'synthetic',[{'kind':'kill','victim':'2'}])
+        p=loads(PACKAGE.read_text()); price_and_allocate(p,'plant','full','de_inferno',c,r)
+        for kind,map_name,changed in [('defuse','de_inferno',r),('plant','de_nuke',r),('plant','de_inferno',{**r,'round':999})]:
+            with self.assertRaises(ValueError): price_and_allocate(p,kind,'full',map_name,c,changed)
+        changed=copy.deepcopy(r);changed['players'][5]['startGear']=9000
+        with self.assertRaises(ValueError): price_and_allocate(p,'plant','full','de_inferno',c,changed)
+        for broken in ([kill,copy.deepcopy(kill),goal],[kill,{**kill,'index':1},goal],[{**kill,'tick':51},goal],[kill,{**goal,'actor':'0'}]):
+            with self.assertRaises(ValueError): make_context(r,{**e,'events':broken},broken[-1],'synthetic')
     def test_derived_hp_does_not_prove_order(self):
         result=check_derived_hurt_bookkeeping([{'roundNumber':1,'victimIndex':1,'healthDamageRaw':4,'victimHealthBefore':100,'healthDamage':4}])
         self.assertTrue(result['bookkeepingConsistent']); self.assertEqual(result['actualSameTickOrder'],'unknown')
     def test_fold_missing_and_overlap(self):
-        p=loads(PACKAGE.read_text()); self.assertEqual(fold_evidence(p)['labelOrigin'],'unverified')
+        p=loads(PACKAGE.read_text()); self.assertEqual(fold_evidence(p)['labelOrigin'],'unverified'); self.assertEqual(fold_evidence(p)['routing'],'internally_consistent')
+        universe=[x for f in p['folds']['teacherOuter'] for x in f['validationGroups']]
+        self.assertEqual(fold_evidence(p,universe)['routing'],'verified_against_independent_universe')
+        changed=copy.deepcopy(p); changed['folds']['headGroups']['HP/0']['validationGroups'].append(changed['folds']['headGroups']['HP/0']['validationGroups'][0])
+        with self.assertRaises(ValueError): fold_evidence(changed)
+        removed=universe[0]; changed=copy.deepcopy(p)
+        for group in changed['folds']['teacherOuter']:
+            for label in ('trainingGroups','validationGroups'): group[label]=[v for v in group[label] if v!=removed]
+        for group in changed['folds']['headGroups'].values():
+            for label in ('trainingGroups','validationGroups'): group[label]=[v for v in group[label] if v!=removed]
+        self.assertEqual(fold_evidence(changed)['routing'],'internally_consistent')
+        with self.assertRaises(ValueError): fold_evidence(changed,universe)
         self.assertEqual(fold_evidence({'folds':{}})['routing'],'unverified')
         p['folds']['teacherOuter'][0]['trainingGroups'].append(p['folds']['teacherOuter'][0]['validationGroups'][0])
         with self.assertRaises(ValueError): fold_evidence(p)

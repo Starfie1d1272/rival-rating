@@ -5,6 +5,10 @@ from .features import objective as objective_features
 from .contracts import validate_event, validate_round
 @dataclass(frozen=True)
 class ObjectiveContext:
+ roundBinding: str
+ mapName: str
+ goalKind: str
+ goalKey: dict
  sourceEventKeys: tuple
  atomicTick: int
  statePhase: str
@@ -28,6 +32,12 @@ class ObjectiveContext:
   if not self.valid: raise ValueError('invalid objective context')
   allocate_objective(0, self, r)
   return objective_features(r,{'before':list(self.commonFeatureState)},self.actor)
+def round_binding(r):
+ # Bind every round field consumed by replay, feature extraction and map selection.
+ payload={key:r[key] for key in ('map','round','players','killSlots','freeze','end','rate')}
+ payload['mapName']=r.get('mapName',r['map'])
+ return hashlib.sha256(json.dumps(payload,sort_keys=True,separators=(',',':'),allow_nan=False).encode()).hexdigest()
+
 def event_key(r,e,k,domain):
  return dict(domain=domain,map=r['map'],round=r['round'],tick=e['tick'],kind=k['kind'],sourceTypeIndex=k.get('index'),actor=k.get('actor'),victim=k.get('victim'))
 def make_context(r,e,goal,domain,selected_kills=()):
@@ -57,7 +67,7 @@ def make_context(r,e,goal,domain,selected_kills=()):
  actor=goal.get('actor')
  if actor not in ps:anomalies.append(dict(reason='unknown_goal_actor',actor=actor))
  same=[k for k in e['events'] if k['kind']=='kill']
- return ObjectiveContext(tuple(event_key(r,e,k,domain) for k in e['events']),e['tick'],'atomic_group_start' if not selected_kills else 'hypothetical_selected_kills_before_objective',tuple(sorted(alive)),counts,actor,actor in alive,tuple(state),dict(crossTypeOrder='unknown',globalSequenceAvailable=False,knownBeforeRule='all source kills with kill.tick strictly less than atomic tick, including world/self/friendly',sameTickKillCount=len(same),interpretation='model sensitivity only; no inferred actual ordering'),tuple(event_key(r,e,k,domain) for k in selected_kills),tuple(anomalies))
+ return ObjectiveContext(round_binding(r),r.get('mapName',r['map']),goal['kind'],event_key(r,e,goal,domain),tuple(event_key(r,e,k,domain) for k in e['events']),e['tick'],'atomic_group_start' if not selected_kills else 'hypothetical_selected_kills_before_objective',tuple(sorted(alive)),counts,actor,actor in alive,tuple(state),dict(crossTypeOrder='unknown',globalSequenceAvailable=False,knownBeforeRule='all source kills with kill.tick strictly less than atomic tick, including world/self/friendly',sameTickKillCount=len(same),interpretation='model sensitivity only; no inferred actual ordering'),tuple(event_key(r,e,k,domain) for k in selected_kills),tuple(anomalies))
 
 def allocate_objective(team_goal, context, r):
  """Use one explicit context for execution share; never infer a true ordering."""
@@ -65,6 +75,7 @@ def allocate_objective(team_goal, context, r):
  if isinstance(team_goal,bool) or not isinstance(team_goal,(int,float)) or not math.isfinite(team_goal) or team_goal<0:
   raise ValueError('team goal value must be finite and nonnegative, not bool')
  validate_round(r)
+ if round_binding(r)!=context.roundBinding: raise ValueError('round no longer matches objective context')
  if not context.valid:
   raise ValueError('invalid objective context: actor dead/unresolved or source mismatch')
  ps={p['steam']:p for p in r['players']};alive=set(context.aliveIds)
@@ -88,6 +99,8 @@ def price_and_allocate(package, kind, fold, map_name, context, r):
  """Use the identical context for feature extraction, price and allocation."""
  from .heads import infer
  if kind not in ('plant', 'defuse'): raise ValueError('invalid objective head')
+ if kind != {'planted':'plant','defused':'defuse'}[context.goalKind]: raise ValueError('head does not match goal')
+ if map_name != context.mapName: raise ValueError('map does not match objective context')
  features = context.features(r)
  value = infer(package, kind, fold, features, map_name)
  return allocate_objective(value, context, r)
