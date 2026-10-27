@@ -45,9 +45,46 @@ class DifferenceTests(unittest.TestCase):
   ledger=score_round(case.p,'website_common_full',case.r,[])
   identities={(case.r['map'],str(i)):('s',str(i)) for i in range(10)}
   rows=aggregate([ledger],identities);batch={'rounds':[{'round':case.r,'events':[]}]}
-  records=registry('website',{'aggregates':rows},batch,[],[],identities)
+  records=registry('website',{'mode':'website_common_full','ledgers':[ledger],'aggregates':rows},batch,[],[],identities)
   self.assertEqual(len(records),20);self.assertAlmostEqual(records[0]['H2_public_formula']['value'],.791448)
   self.assertEqual(records[0]['unexplained_external_residual']['H2_community_linear_v1']['status'],'algebraically_specified_difference')
+  report={'mode':'website_common_full','ledgers':[ledger],'aggregates':rows}
+  wrong=copy.deepcopy(batch);wrong['rounds'][0]['round']['rid']='another'
+  changed=copy.deepcopy(batch);changed['rounds'][0]['round']['facts']['0']['damage']=1000
+  cases=[(report,wrong),(report,changed),({**report,'aggregates':rows[:-1]},batch),({**report,'aggregates':rows+[copy.deepcopy(rows[0])]},batch)]
+  extra=copy.deepcopy(rows[0]);extra['key']=['extra'];cases.append(({**report,'aggregates':rows+[extra]},batch))
+  bad=copy.deepcopy(report);bad['aggregates'][0]['evidence'][0]['ledgerSHA256']='0'*64;cases.append((bad,batch))
+  for bad_report,bad_batch in cases:
+   with self.assertRaises(ValueError):registry('website',bad_report,bad_batch,[],[],identities)
+
+class DifferenceCLITests(unittest.TestCase):
+ def test_changed_source_with_valid_file_hash_is_rejected(self):
+  from tools.offline_rating.differences_cli import main as run
+  case=PipelineTests();case.setUp()
+  for f in case.r['facts'].values(): f.update(kast=True,assists=0)
+  ledger=score_round(case.p,'website_common_full',case.r,[])
+  identities=[{'map':case.r['map'],'steam':str(i),'season':'s','userId':str(i)} for i in range(10)]
+  mapping={(v['map'],v['steam']):(v['season'],v['userId']) for v in identities}
+  report={'mode':'website_common_full','ledgers':[ledger],'aggregates':aggregate([ledger],mapping)}
+  batch={'rounds':[{'round':case.r,'events':[]}]}
+  with tempfile.TemporaryDirectory() as d:
+   root=Path(d);sources={'report':report,'batch':batch,'references':[],'baseline':[],'identities':identities};args=['--domain','website','--output',str(root/'out')]
+   for key,value in sources.items():
+    path=root/key;path.write_text(json.dumps(value));args.extend(['--'+key,str(path),'--'+key+'-sha256',hashlib.sha256(path.read_bytes()).hexdigest()])
+   self.assertEqual(run(args),0);(root/'out').unlink()
+   changed=copy.deepcopy(batch);changed['rounds'][0]['round']['facts']['0']['damage']=1000;path=root/'batch';path.write_text(json.dumps(changed));pos=args.index('--batch-sha256')+1;args[pos]=hashlib.sha256(path.read_bytes()).hexdigest()
+   self.assertEqual(run(args),2)
+   path.write_text(json.dumps(batch));args[pos]=hashlib.sha256(path.read_bytes()).hexdigest()
+   corruptions=[]
+   missing=copy.deepcopy(report);missing['aggregates'].pop();corruptions.append(missing)
+   extra=copy.deepcopy(report);v=copy.deepcopy(extra['aggregates'][0]);v['key']=['bogus'];extra['aggregates'].append(v);corruptions.append(extra)
+   badlink=copy.deepcopy(report);badlink['aggregates'][0]['evidence'][0]['ledgerSHA256']='0'*64;corruptions.append(badlink)
+   for value in corruptions:
+    target=root/'report';target.write_text(json.dumps(value));args[args.index('--report-sha256')+1]=hashlib.sha256(target.read_bytes()).hexdigest()
+    self.assertEqual(run(args),2)
+   target=root/'report';target.write_text(json.dumps(report));args[args.index('--report-sha256')+1]=hashlib.sha256(target.read_bytes()).hexdigest()
+   wrong=copy.deepcopy(batch);wrong['rounds'][0]['round']['rid']='another';path.write_text(json.dumps(wrong));args[pos]=hashlib.sha256(path.read_bytes()).hexdigest()
+   self.assertEqual(run(args),2)
 
 class CoverageTests(unittest.TestCase):
  def test_missing_duplicate_extra_and_outside_kills(self):

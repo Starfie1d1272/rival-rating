@@ -2,7 +2,7 @@
 import json
 import math
 from pathlib import Path
-from .pipeline import COMPONENTS, SCALE
+from .pipeline import COMPONENTS, SCALE, aggregate, canonical_hash
 
 H2_FORMULA='.0073*KAST_percent+.3591*KPR-.5329*DPR+.2372*(2.13*KPR+.42*APR-.41)+.0032*ADR+.1587'
 
@@ -14,6 +14,38 @@ def h2_terms(facts):
 
 def registry(domain, report, batch, references, baseline, identities=None):
     if domain not in ('website','professional'): raise ValueError('unknown domain')
+    expected_mode={'website':'website_common_full','professional':'professional_common_oof'}[domain]
+    if report.get('mode',expected_mode)!=expected_mode: raise ValueError('report mode mismatch')
+    items=batch['rounds']; ledgers=report['ledgers']; source={}
+    for item in items:
+        r=item['round']; rid=r['rid']
+        if rid in source: raise ValueError('duplicate batch round')
+        source[rid]=item
+    if not source or not isinstance(ledgers,list): raise ValueError('empty or invalid ledger')
+    seen=set()
+    for ledger in ledgers:
+        rid=ledger['rid']
+        if rid in seen or rid not in source: raise ValueError('ledger round identity mismatch')
+        seen.add(rid); item=source[rid]; r=item['round']
+        if ledger.get('mode')!=expected_mode or ledger.get('map')!=r['map'] or ledger.get('round')!=r['round'] or ledger.get('series')!=r['group']:
+            raise ValueError('ledger metadata mismatch')
+        if ledger.get('sourceRoundSHA256')!=canonical_hash(r) or ledger.get('sourceEventsSHA256')!=canonical_hash(item['events']):
+            raise ValueError('ledger source payload hash mismatch')
+        if set(ledger['components'])!=set(r['facts']): raise ValueError('ledger player coverage mismatch')
+    if seen!=set(source): raise ValueError('batch and ledger coverage mismatch')
+    reconstructed=aggregate(ledgers,identities)
+    supplied=report['aggregates']
+    def indexed(rows):
+        result={}
+        for row in rows:
+            key=(row['scope'],tuple(row['key']))
+            if key in result:raise ValueError('duplicate aggregate identity')
+            result[key]=row
+        return result
+    actual=indexed(supplied);expected=indexed(reconstructed)
+    if set(actual)!=set(expected): raise ValueError('aggregate key coverage mismatch')
+    for key,row in expected.items():
+        if actual[key]!=row: raise ValueError('aggregate or ledger evidence mismatch')
     ref_index={}; base_index={};facts={}
     for v in references:
         key=(v['scope'],tuple(v['key']))

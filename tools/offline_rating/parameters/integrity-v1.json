@@ -3,7 +3,7 @@
   "tools/offline_rating/__main__.py": "bb976586fc5c4f7fe3068ba193ef61ffb883dc1c90e4dfcfe615f0c4d355ebc8",
   "tools/offline_rating/adapters.py": "669a00abaf032b09469926d7d62db524c2e627a6537141180f90065e43660d10",
   "tools/offline_rating/contracts.py": "9d1ee73568ca8c860215903bd743aa752d3411483394f7463403185181a169c7",
-  "tools/offline_rating/differences.py": "865062e022ab2b374b8d650ea7e2d09a9081a41f6596c4cc365beab0ec411638",
+  "tools/offline_rating/differences.py": "7d2d27137adcb2a29a9c261e210358bd22e6b7c71aa5684bc40dc7626e86c8e5",
   "tools/offline_rating/differences_cli.py": "8e3c07d3e7107cc5ec32a8504c307bd2c5bb8f45b4b1b1493c23d214b142111d",
   "tools/offline_rating/evidence.py": "b032d4d511819f6f7576f645c76dec789a6a02bf33169382e3692591a2f2d015",
   "tools/offline_rating/export_parameters.py": "2ac455f36517a95f0dfa3476af028a4776c09e75a53f75c29ab5faa5b1c12b4a",
