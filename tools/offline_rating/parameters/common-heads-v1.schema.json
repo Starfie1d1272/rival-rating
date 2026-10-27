@@ -1,0 +1,1834 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RR common heads export v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "description",
+    "features",
+    "heads",
+    "folds",
+    "gamma",
+    "scale",
+    "centerRule",
+    "unknownMapRule",
+    "provenance"
+  ],
+  "properties": {
+    "schema": {
+      "const": "rr-common-heads-v1"
+    },
+    "description": {
+      "type": "string"
+    },
+    "features": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "HP",
+        "life",
+        "plant",
+        "defuse",
+        "enemyFlash",
+        "friendlyFlash"
+      ],
+      "properties": {
+        "HP": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "prefixItems": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownIsCT"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "actorStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "gearDifference10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "duration120"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "exposure120"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "kills5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "deaths"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "flashAssists5"
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "life": {
+          "type": "array",
+          "minItems": 19,
+          "maxItems": 19,
+          "prefixItems": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownIsCT"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownAlive5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyAlive5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "aliveDifference5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "inverseOwnAlive"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "inverseEnemyAlive"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "planted"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "elapsed120"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "bombElapsed40"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownAliveStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyAliveStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "actorStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "victimStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownKillsThisTick5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyKillsThisTick5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownAliveAfterKills5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyAliveAfterKills5"
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "plant": {
+          "type": "array",
+          "minItems": 12,
+          "maxItems": 12,
+          "prefixItems": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownIsCT"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownAlive5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyAlive5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "aliveDifference5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "planted"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "elapsed120"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "bombElapsed40"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownAliveStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyAliveStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "actorStartGear10k"
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "defuse": {
+          "type": "array",
+          "minItems": 12,
+          "maxItems": 12,
+          "prefixItems": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownIsCT"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownAlive5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyAlive5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "aliveDifference5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "planted"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "elapsed120"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "bombElapsed40"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownAliveStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyAliveStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "actorStartGear10k"
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "enemyFlash": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "prefixItems": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownIsCT"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "actorStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "gearDifference10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "duration120"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "exposure120"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "kills5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "deaths"
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "items": false
+        },
+        "friendlyFlash": {
+          "type": "array",
+          "minItems": 9,
+          "maxItems": 9,
+          "prefixItems": [
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownIsCT"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "actorStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "ownStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "enemyStartGear10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "gearDifference10k"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "duration120"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "exposure120"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "kills5"
+                    }
+                  }
+                }
+              ]
+            },
+            {
+              "allOf": [
+                {
+                  "$ref": "#/$defs/feature"
+                },
+                {
+                  "properties": {
+                    "name": {
+                      "const": "deaths"
+                    }
+                  }
+                }
+              ]
+            }
+          ],
+          "items": false
+        }
+      }
+    },
+    "heads": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "HP/full",
+        "HP/0",
+        "HP/1",
+        "HP/2",
+        "HP/3",
+        "HP/4",
+        "life/full",
+        "life/0",
+        "life/1",
+        "life/2",
+        "life/3",
+        "life/4",
+        "plant/full",
+        "plant/0",
+        "plant/1",
+        "plant/2",
+        "plant/3",
+        "plant/4",
+        "defuse/full",
+        "defuse/0",
+        "defuse/1",
+        "defuse/2",
+        "defuse/3",
+        "defuse/4",
+        "enemyFlash/full",
+        "enemyFlash/0",
+        "enemyFlash/1",
+        "enemyFlash/2",
+        "enemyFlash/3",
+        "enemyFlash/4",
+        "friendlyFlash/full",
+        "friendlyFlash/0",
+        "friendlyFlash/1",
+        "friendlyFlash/2",
+        "friendlyFlash/3",
+        "friendlyFlash/4"
+      ],
+      "properties": {
+        "HP/full": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "HP/0": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "HP/1": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "HP/2": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "HP/3": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "HP/4": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "life/full": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 0.5
+                }
+              }
+            }
+          ]
+        },
+        "life/0": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 0.5
+                }
+              }
+            }
+          ]
+        },
+        "life/1": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 0.5
+                }
+              }
+            }
+          ]
+        },
+        "life/2": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 0.5
+                }
+              }
+            }
+          ]
+        },
+        "life/3": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 0.5
+                }
+              }
+            }
+          ]
+        },
+        "life/4": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 0.5
+                }
+              }
+            }
+          ]
+        },
+        "plant/full": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "plant/0": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "plant/1": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "plant/2": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "plant/3": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "plant/4": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "defuse/full": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "defuse/0": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "defuse/1": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "defuse/2": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "defuse/3": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "defuse/4": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": 1.0
+                }
+              }
+            }
+          ]
+        },
+        "enemyFlash/full": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "enemyFlash/0": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "enemyFlash/1": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "enemyFlash/2": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "enemyFlash/3": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "enemyFlash/4": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "friendlyFlash/full": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "friendlyFlash/0": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "friendlyFlash/1": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "friendlyFlash/2": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "friendlyFlash/3": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        },
+        "friendlyFlash/4": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/head"
+            },
+            {
+              "properties": {
+                "bound": {
+                  "const": null
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    "folds": {
+      "type": "object",
+      "required": [
+        "teacherOuter",
+        "headGroups"
+      ]
+    },
+    "gamma": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "full",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "properties": {
+        "full": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "0": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "1": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "2": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "3": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "4": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "scale": {
+      "type": "number",
+      "exclusiveMinimum": 0
+    },
+    "centerRule": {
+      "type": "string"
+    },
+    "unknownMapRule": {
+      "type": "string"
+    },
+    "provenance": {
+      "type": "object"
+    }
+  },
+  "$comment": "Stage3 validator additionally rejects duplicate JSON keys, nonfinite numbers, fixed feature spoofing, invalid bounds/gamma/scale, and dynamic scaler/coefficient dimensions.",
+  "$defs": {
+    "head": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "features",
+        "vocab",
+        "mean",
+        "scale",
+        "coef",
+        "intercept",
+        "bound",
+        "doseScale",
+        "mix",
+        "alpha",
+        "sourceFile",
+        "sourceSHA256",
+        "sourceHeadSHA256"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "poisson",
+            "bounded-logit",
+            "nonnegative-exposure-mixture"
+          ]
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "vocab": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "mean": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "scale": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          }
+        },
+        "coef": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        "intercept": {
+          "type": "number"
+        },
+        "bound": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "doseScale": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          }
+        },
+        "mix": {
+          "type": [
+            "array",
+            "null"
+          ],
+          "items": {
+            "type": "number"
+          }
+        },
+        "alpha": {
+          "type": "number"
+        },
+        "sourceFile": {
+          "type": "string"
+        },
+        "sourceSHA256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "sourceHeadSHA256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    },
+    "feature": {
+      "type": "object",
+      "required": [
+        "name",
+        "unit",
+        "formula",
+        "sourceFields",
+        "availability",
+        "phase"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "formula": {
+          "type": "string"
+        },
+        "sourceFields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "availability": {
+          "type": "string"
+        },
+        "phase": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
