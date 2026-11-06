@@ -12,8 +12,7 @@ export function zScoreAll(values: number[]): number[] {
   if (values.length <= 1) return values.map(() => 0);
 
   const mean = values.reduce((a, b) => a + b, 0) / values.length;
-  const variance =
-    values.reduce((acc, v) => acc + (v - mean) ** 2, 0) / (values.length - 1);
+  const variance = values.reduce((acc, v) => acc + (v - mean) ** 2, 0) / (values.length - 1);
   const std = Math.sqrt(variance);
 
   if (std === 0) return values.map(() => 0);
@@ -41,10 +40,7 @@ export function coldStartShrink(z: number, n: number, k: number): number {
  *   - 低于最小值 → 0
  *   - 高于最大值 → 100
  */
-export function empiricalPercentile(
-  sortedValues: number[],
-  target: number,
-): number {
+export function empiricalPercentile(sortedValues: number[], target: number): number {
   if (sortedValues.length === 0) return 50;
   if (sortedValues.length === 1) return 50;
 
@@ -71,12 +67,9 @@ export function empiricalPercentile(
  */
 export function normalCDF(z: number): number {
   const t = 1 / (1 + 0.2316419 * Math.abs(z));
-  const d = 0.3989422820 * Math.exp((-z * z) / 2);
+  const d = 0.398942282 * Math.exp((-z * z) / 2);
   const p =
-    d *
-    t *
-    (0.3193815 +
-      t * (-0.3565638 + t * (1.7814779 + t * (-1.8212560 + t * 1.3302744))));
+    d * t * (0.3193815 + t * (-0.3565638 + t * (1.7814779 + t * (-1.821256 + t * 1.3302744))));
   return z >= 0 ? 1 - p : p;
 }
 
@@ -84,11 +77,7 @@ export function normalCDF(z: number): number {
  * 将 z-score 转为 0–100 百分位，优先用经验排名，
  * 样本 < minEmpiricalN 时退化到正态 CDF。
  */
-export function zToPercentile(
-  z: number,
-  cohortZScores: number[],
-  minEmpiricalN = 5,
-): number {
+export function zToPercentile(z: number, cohortZScores: number[], minEmpiricalN = 5): number {
   if (cohortZScores.length >= minEmpiricalN) {
     const sorted = [...cohortZScores].sort((a, b) => a - b);
     return empiricalPercentile(sorted, z);

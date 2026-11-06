@@ -1,7 +1,7 @@
-import { describe, expect, it } from "vitest";
-import { computeRRSixAccounts } from "./six-accounts.js";
-import type { RRSixAccountWeights, RRSignals } from "../../types/accounts.js";
-import weightsJson from "../../weights/rr-six-accounts-v1.json" with { type: "json" };
+import { describe, expect, it } from 'vitest';
+import { computeRRSixAccounts } from './six-accounts.js';
+import type { RRSixAccountWeights, RRSignals } from '../../types/accounts.js';
+import weightsJson from '../../weights/rr-six-accounts-v1.json' with { type: 'json' };
 
 const weights = weightsJson as unknown as RRSixAccountWeights;
 const mapControlEnabledWeights: RRSixAccountWeights = {
@@ -12,7 +12,7 @@ const mapControlEnabledWeights: RRSixAccountWeights = {
 function makeSignals(overrides: Partial<RRSignals> = {}): RRSignals {
   const rounds = 100;
   const base: RRSignals = {
-    steamId64: "p1",
+    steamId64: 'p1',
     rounds,
     combat: {
       kills: 70,
@@ -64,56 +64,68 @@ function makeSignals(overrides: Partial<RRSignals> = {}): RRSignals {
   return { ...base, ...overrides };
 }
 
-describe("computeRRSixAccounts", () => {
-  it("returns a neutral result when rounds is zero", () => {
+describe('computeRRSixAccounts', () => {
+  it('returns a neutral result when rounds is zero', () => {
     const out = computeRRSixAccounts(makeSignals({ rounds: 0 }), weights);
     expect(out.rr).toBe(1);
     expect(out.accounts.mapControl).toBe(0);
   });
 
-  it("adds MapControl as a first-class positive account", () => {
-    const low = computeRRSixAccounts(makeSignals({
-      mapControl: {
-        uniqueStrategicControlSeconds: 0,
-        contestedFrontierControlSeconds: 0,
-        routeDenialSeconds: 0,
-        teammateAdvanceUnits: 0,
-        firstControlEvents: 0,
-      },
-    }), mapControlEnabledWeights);
-    const high = computeRRSixAccounts(makeSignals({
-      mapControl: {
-        uniqueStrategicControlSeconds: 200,
-        contestedFrontierControlSeconds: 150,
-        routeDenialSeconds: 120,
-        teammateAdvanceUnits: 300,
-        firstControlEvents: 25,
-      },
-    }), mapControlEnabledWeights);
+  it('adds MapControl as a first-class positive account', () => {
+    const low = computeRRSixAccounts(
+      makeSignals({
+        mapControl: {
+          uniqueStrategicControlSeconds: 0,
+          contestedFrontierControlSeconds: 0,
+          routeDenialSeconds: 0,
+          teammateAdvanceUnits: 0,
+          firstControlEvents: 0,
+        },
+      }),
+      mapControlEnabledWeights,
+    );
+    const high = computeRRSixAccounts(
+      makeSignals({
+        mapControl: {
+          uniqueStrategicControlSeconds: 200,
+          contestedFrontierControlSeconds: 150,
+          routeDenialSeconds: 120,
+          teammateAdvanceUnits: 300,
+          firstControlEvents: 25,
+        },
+      }),
+      mapControlEnabledWeights,
+    );
 
     expect(high.accounts.mapControl).toBeGreaterThan(low.accounts.mapControl);
     expect(high.rrRaw).toBeGreaterThan(low.rrRaw);
   });
 
-  it("uses strategic isolation only to reduce Trade penalty", () => {
-    const isolated = computeRRSixAccounts(makeSignals({
-      trade: {
-        tradeKills: 18,
-        tradedDeaths: 15,
-        deaths: 65,
-        tradedOpeningDeaths: 4,
-        strategicIsolationDeaths: 10,
-      },
-    }), weights);
-    const unisolated = computeRRSixAccounts(makeSignals({
-      trade: {
-        tradeKills: 18,
-        tradedDeaths: 15,
-        deaths: 65,
-        tradedOpeningDeaths: 4,
-        strategicIsolationDeaths: 0,
-      },
-    }), weights);
+  it('uses strategic isolation only to reduce Trade penalty', () => {
+    const isolated = computeRRSixAccounts(
+      makeSignals({
+        trade: {
+          tradeKills: 18,
+          tradedDeaths: 15,
+          deaths: 65,
+          tradedOpeningDeaths: 4,
+          strategicIsolationDeaths: 10,
+        },
+      }),
+      weights,
+    );
+    const unisolated = computeRRSixAccounts(
+      makeSignals({
+        trade: {
+          tradeKills: 18,
+          tradedDeaths: 15,
+          deaths: 65,
+          tradedOpeningDeaths: 4,
+          strategicIsolationDeaths: 0,
+        },
+      }),
+      weights,
+    );
 
     expect(isolated.accounts.trade).toBeGreaterThan(unisolated.accounts.trade);
     expect(isolated.accounts.mapControl).toBe(unisolated.accounts.mapControl);

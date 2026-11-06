@@ -22,10 +22,10 @@
  * 纯函数，无副作用。
  */
 
-import { computeRRSixAccounts } from "./six-accounts.js";
-import { RR_ACCOUNTS } from "../../types/accounts.js";
-import type { RRAccountKey, RRSixAccountWeights, RRSignals } from "../../types/accounts.js";
-import type { CohortAccountResult } from "./cohort-accounts.js";
+import { computeRRSixAccounts } from './six-accounts.js';
+import { RR_ACCOUNTS } from '../../types/accounts.js';
+import type { RRAccountKey, RRSixAccountWeights, RRSignals } from '../../types/accounts.js';
+import type { CohortAccountResult } from './cohort-accounts.js';
 
 /** 单个账户的冻结分布参数。 */
 export interface ProBaselineAccount {
@@ -82,7 +82,7 @@ export function computeFrozenProBaselineRR(
   const used = {} as Record<RRAccountKey, number>;
   used.combat = zc;
   for (const k of RR_ACCOUNTS) {
-    if (k === "combat") continue;
+    if (k === 'combat') continue;
     const slope = baseline.accounts[k].slope;
     const denom = Math.sqrt(Math.max(1e-9, 1 - slope * slope));
     used[k] = (z[k] - slope * zc) / denom;

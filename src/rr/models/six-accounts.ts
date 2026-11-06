@@ -15,12 +15,9 @@ import type {
   RRSixAccountResult,
   RRSixAccountWeights,
   RRSignals,
-} from "../../types/accounts.js";
+} from '../../types/accounts.js';
 
-export function computeRRSixAccounts(
-  sig: RRSignals,
-  w: RRSixAccountWeights,
-): RRSixAccountResult {
+export function computeRRSixAccounts(sig: RRSignals, w: RRSixAccountWeights): RRSixAccountResult {
   if (sig.rounds <= 0) {
     return zeroResult(w.version);
   }
@@ -51,34 +48,82 @@ export function computeRRSixAccounts(
   const m = sig.mapControl;
   const mapControlRaw =
     w.mapControl.uniqueStrategicControlSecondsWeight *
-      cappedPerRound(m.uniqueStrategicControlSeconds, r, w.mapControlNormalizers.uniqueStrategicControlSecondsPerRoundCap) +
+      cappedPerRound(
+        m.uniqueStrategicControlSeconds,
+        r,
+        w.mapControlNormalizers.uniqueStrategicControlSecondsPerRoundCap,
+      ) +
     w.mapControl.contestedFrontierControlSecondsWeight *
-      cappedPerRound(m.contestedFrontierControlSeconds, r, w.mapControlNormalizers.contestedFrontierControlSecondsPerRoundCap) +
+      cappedPerRound(
+        m.contestedFrontierControlSeconds,
+        r,
+        w.mapControlNormalizers.contestedFrontierControlSecondsPerRoundCap,
+      ) +
     w.mapControl.routeDenialSecondsWeight *
-      cappedPerRound(m.routeDenialSeconds, r, w.mapControlNormalizers.routeDenialSecondsPerRoundCap) +
+      cappedPerRound(
+        m.routeDenialSeconds,
+        r,
+        w.mapControlNormalizers.routeDenialSecondsPerRoundCap,
+      ) +
     w.mapControl.teammateAdvanceUnitsWeight *
-      cappedPerRound(m.teammateAdvanceUnits, r, w.mapControlNormalizers.teammateAdvanceUnitsPerRoundCap) +
+      cappedPerRound(
+        m.teammateAdvanceUnits,
+        r,
+        w.mapControlNormalizers.teammateAdvanceUnitsPerRoundCap,
+      ) +
     w.mapControl.firstControlEventsWeight *
-      cappedPerRound(m.firstControlEvents, r, w.mapControlNormalizers.firstControlEventsPerRoundCap);
+      cappedPerRound(
+        m.firstControlEvents,
+        r,
+        w.mapControlNormalizers.firstControlEventsPerRoundCap,
+      );
 
   const u = sig.utility;
   const utilityRaw =
     w.utility.flashAssistWeight *
       cappedPerRound(u.flashAssists, r, w.utilityNormalizers.flashAssistsPerRoundCap) +
     w.utility.effectiveEnemyFlashSecondsWeight *
-      cappedPerRound(u.effectiveEnemyFlashSeconds, r, w.utilityNormalizers.effectiveEnemyFlashSecondsPerRoundCap) +
+      cappedPerRound(
+        u.effectiveEnemyFlashSeconds,
+        r,
+        w.utilityNormalizers.effectiveEnemyFlashSecondsPerRoundCap,
+      ) +
     w.utility.teamFlashSuppressionPenalty *
-      cappedPerRound(u.teamFlashSuppressionSeconds, r, w.utilityNormalizers.teamFlashSuppressionSecondsPerRoundCap) +
+      cappedPerRound(
+        u.teamFlashSuppressionSeconds,
+        r,
+        w.utilityNormalizers.teamFlashSuppressionSecondsPerRoundCap,
+      ) +
     w.utility.smokeProtectedCrossingsWeight *
-      cappedPerRound(u.smokeProtectedCrossings, r, w.utilityNormalizers.smokeProtectedCrossingsPerRoundCap) +
+      cappedPerRound(
+        u.smokeProtectedCrossings,
+        r,
+        w.utilityNormalizers.smokeProtectedCrossingsPerRoundCap,
+      ) +
     w.utility.smokeSightlineDenialSecondsWeight *
-      cappedPerRound(u.smokeSightlineDenialSeconds, r, w.utilityNormalizers.smokeSightlineDenialSecondsPerRoundCap) +
+      cappedPerRound(
+        u.smokeSightlineDenialSeconds,
+        r,
+        w.utilityNormalizers.smokeSightlineDenialSecondsPerRoundCap,
+      ) +
     w.utility.smokeIsolationSecondsWeight *
-      cappedPerRound(u.smokeIsolationSeconds, r, w.utilityNormalizers.smokeIsolationSecondsPerRoundCap) +
+      cappedPerRound(
+        u.smokeIsolationSeconds,
+        r,
+        w.utilityNormalizers.smokeIsolationSecondsPerRoundCap,
+      ) +
     w.utility.incendiaryPathDelayUnitsWeight *
-      cappedPerRound(u.incendiaryPathDelayUnits, r, w.utilityNormalizers.incendiaryPathDelayUnitsPerRoundCap) +
+      cappedPerRound(
+        u.incendiaryPathDelayUnits,
+        r,
+        w.utilityNormalizers.incendiaryPathDelayUnitsPerRoundCap,
+      ) +
     w.utility.incendiaryDisplacementEventsWeight *
-      cappedPerRound(u.incendiaryDisplacementEvents, r, w.utilityNormalizers.incendiaryDisplacementEventsPerRoundCap) +
+      cappedPerRound(
+        u.incendiaryDisplacementEvents,
+        r,
+        w.utilityNormalizers.incendiaryDisplacementEventsPerRoundCap,
+      ) +
     w.utility.utilityDamageWeight *
       cappedPerRound(u.utilityDamage, r, w.utilityNormalizers.utilityDamagePerRoundCap);
 
@@ -89,7 +134,8 @@ export function computeRRSixAccounts(
     sig.clutch.vsFour.count +
     sig.clutch.vsFive.count;
   const clutchShrink = clutchAttempts / (clutchAttempts + w.clutch.shrinkageK);
-  const clutchRaw = (w.clutch.winValueWeight * clutchExcess(sig.clutch, w.clutch) * clutchShrink) / r;
+  const clutchRaw =
+    (w.clutch.winValueWeight * clutchExcess(sig.clutch, w.clutch) * clutchShrink) / r;
 
   const o = sig.objective;
   const objectiveRaw =
@@ -120,7 +166,7 @@ export function computeRRSixAccounts(
     rr,
     rrRaw,
     weightsVersion: w.version,
-    model: "rr-six-accounts",
+    model: 'rr-six-accounts',
     accounts,
     combatContextFactor: contextFactor,
   };
@@ -132,9 +178,9 @@ export function computeRRSixAccountMean(results: RRSixAccountResult[]): number {
 }
 
 export const rrSixAccountsModel: RRModel<RRSignals, RRSixAccountWeights, RRSixAccountResult> = {
-  id: "rr-six-accounts",
-  version: "rr-six-accounts-1.0",
-  inputKind: "rr-signals",
+  id: 'rr-six-accounts',
+  version: 'rr-six-accounts-1.0',
+  inputKind: 'rr-signals',
   compute: computeRRSixAccounts,
 };
 
@@ -158,9 +204,7 @@ function combatContextFactor(c: CombatSignals, w: CombatWeights): number {
     const sum = m.manDown + m.even + m.manUp;
     if (sum > 0) {
       factor *=
-        (m.manDown * w.manState.manDownMultiplier +
-          m.even +
-          m.manUp * w.manState.manUpMultiplier) /
+        (m.manDown * w.manState.manDownMultiplier + m.even + m.manUp * w.manState.manUpMultiplier) /
         sum;
     }
   }
@@ -171,7 +215,8 @@ function combatContextFactor(c: CombatSignals, w: CombatWeights): number {
 function clutchExcess(s: ClutchSignals, w: ClutchWeights): number {
   const e = w.expectation;
   return (
-    s.vsOne.won - s.vsOne.count * e.vsOne +
+    s.vsOne.won -
+    s.vsOne.count * e.vsOne +
     (s.vsTwo.won - s.vsTwo.count * e.vsTwo) +
     (s.vsThree.won - s.vsThree.count * e.vsThree) +
     (s.vsFour.won - s.vsFour.count * e.vsFour) +
@@ -184,7 +229,7 @@ function zeroResult(version: string): RRSixAccountResult {
     rr: 1.0,
     rrRaw: 1.0,
     weightsVersion: version,
-    model: "rr-six-accounts",
+    model: 'rr-six-accounts',
     accounts: { combat: 0, trade: 0, mapControl: 0, utility: 0, clutch: 0, objective: 0 },
     combatContextFactor: 1,
   };

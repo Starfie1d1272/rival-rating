@@ -12,16 +12,11 @@
  *   5. 转百分位（经验排名，样本小时退化到正态 CDF）
  */
 
-import type { RRIndicators } from "../types/indicators.js";
-import type {
-  PrismWeights,
-  PrismAxisKey,
-  PrismAxisResult,
-  PrismResult,
-} from "../types/prism.js";
-import { PRISM_AXES } from "../types/prism.js";
-import { extractAxisScoreDetails } from "./extract.js";
-import { zScoreAll, coldStartShrink, zToPercentile } from "./zscore.js";
+import type { RRIndicators } from '../types/indicators.js';
+import type { PrismWeights, PrismAxisKey, PrismAxisResult, PrismResult } from '../types/prism.js';
+import { PRISM_AXES } from '../types/prism.js';
+import { extractAxisScoreDetails } from './extract.js';
+import { zScoreAll, coldStartShrink, zToPercentile } from './zscore.js';
 
 export interface PrismComputeInput {
   indicators: RRIndicators;
@@ -37,10 +32,7 @@ export interface PrismComputeInput {
  * @param cohort   赛季内所有选手的输入数据
  * @param weights  PRISM 权重配置
  */
-export function computePrism(
-  cohort: PrismComputeInput[],
-  weights: PrismWeights,
-): PrismResult[] {
+export function computePrism(cohort: PrismComputeInput[], weights: PrismWeights): PrismResult[] {
   if (cohort.length === 0) return [];
 
   const { coldStartK, axes } = weights;
@@ -101,8 +93,8 @@ export function computePrism(
       const percentileCohort = fusedZ[axis].filter((_, j) => hasSignal[axis][j] ?? false);
       axisResults[axis] = {
         involvementRaw: rawInv[axis][i] ?? 0,
-        efficiencyRaw:  rawEff[axis][i] ?? 0,
-        hasSignal:      hasSignal[axis][i] ?? false,
+        efficiencyRaw: rawEff[axis][i] ?? 0,
+        hasSignal: hasSignal[axis][i] ?? false,
         availableSignalWeight: signalCoverage[axis][i] ?? 0,
         z,
         percentile: (hasSignal[axis][i] ?? false) ? zToPercentile(z, percentileCohort) : 0,
@@ -110,11 +102,11 @@ export function computePrism(
     }
 
     return {
-      steamId64:      entry.indicators.steamId64,
+      steamId64: entry.indicators.steamId64,
       weightsVersion: weights.version,
-      mapCount:       entry.mapCount,
-      rrPercentile:   entry.rrPercentile,
-      axes:           axisResults,
+      mapCount: entry.mapCount,
+      rrPercentile: entry.rrPercentile,
+      axes: axisResults,
     } satisfies PrismResult;
   });
 }

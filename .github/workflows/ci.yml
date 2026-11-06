@@ -24,6 +24,16 @@ jobs:
 
       - run: pnpm install --frozen-lockfile
 
+      - run: python3 -m pip install ruff==0.17.4
+
+      - run: pnpm format:check
+
+      - run: pnpm lint
+
+      - run: ruff format --check tools/offline_rating/tests
+
+      - run: ruff check tools/offline_rating/tests
+
       - run: python3 -m unittest discover -s tools/offline_rating/tests -v
 
       - run: pnpm test

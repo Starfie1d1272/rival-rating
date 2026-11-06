@@ -10,18 +10,15 @@
  *   3. 启用 Layer 2：等 ~1000 张图训好模型后，将 roundSwingCoef 设为非零值
  */
 
-import type { RRIndicators } from "../types/indicators.js";
-import type { RRWeights, RRResult } from "../types/rr.js";
+import type { RRIndicators } from '../types/indicators.js';
+import type { RRWeights, RRResult } from '../types/rr.js';
 
 /**
  * 计算单名选手单张地图的 RR 分。
  *
  * 纯函数，无副作用。
  */
-export function computeRR(
-  ind: RRIndicators,
-  weights: RRWeights,
-): RRResult {
+export function computeRR(ind: RRIndicators, weights: RRWeights): RRResult {
   if (ind.totalRounds <= 0) {
     return zeroResult(weights.version);
   }
@@ -31,36 +28,32 @@ export function computeRR(
   // ── Layer 1：基础公式 ──────────────────────────────────────────────────
   // Impact 子项
   const impact =
-    base.impactKprWeight * ind.kpr +
-    base.impactAprWeight * ind.apr +
-    base.impactIntercept;
+    base.impactKprWeight * ind.kpr + base.impactAprWeight * ind.apr + base.impactIntercept;
 
   // 各分项（保留用于 breakdown / 可解释性）
-  const kastTerm   = base.kastCoef   * ind.kast;
-  const kprTerm    = base.kprCoef    * ind.kpr;
-  const dprTerm    = base.dprCoef    * ind.dpr;
+  const kastTerm = base.kastCoef * ind.kast;
+  const kprTerm = base.kprCoef * ind.kpr;
+  const dprTerm = base.dprCoef * ind.dpr;
   const impactTerm = base.impactCoef * impact;
-  const adrTerm    = base.adrCoef    * ind.adr;
+  const adrTerm = base.adrCoef * ind.adr;
 
-  let rrBase =
-    kastTerm + kprTerm + dprTerm + impactTerm + adrTerm + base.intercept;
+  let rrBase = kastTerm + kprTerm + dprTerm + impactTerm + adrTerm + base.intercept;
 
   // ── eco 上下文乘子（当前 ecoMultipliers 全为 1.0，不改变结果）─────────
   // TODO: 等 ~50 张图校准后替换成回归系数
   // 思路：按选手回合类型分布加权平均乘子，折算到 kpr/adr 基础分上
   const totalCategorized =
-    ind.ecoRoundCount + ind.forceRoundCount +
-    ind.fullBuyRoundCount + ind.pistolRoundCount;
+    ind.ecoRoundCount + ind.forceRoundCount + ind.fullBuyRoundCount + ind.pistolRoundCount;
 
   if (totalCategorized > 0) {
-    const ecoFrac   = ind.ecoRoundCount   / totalCategorized;
+    const ecoFrac = ind.ecoRoundCount / totalCategorized;
     const forceFrac = ind.forceRoundCount / totalCategorized;
-    const fullFrac  = ind.fullBuyRoundCount / totalCategorized;
+    const fullFrac = ind.fullBuyRoundCount / totalCategorized;
     // pistol 保持 1.0，不参与调整
     const ecoAdjust =
-      ecoFrac   * ecoMultipliers.ecoKillMultiplier +
+      ecoFrac * ecoMultipliers.ecoKillMultiplier +
       forceFrac * ecoMultipliers.forceKillMultiplier +
-      fullFrac  * ecoMultipliers.fullBuyKillMultiplier +
+      fullFrac * ecoMultipliers.fullBuyKillMultiplier +
       (1 - ecoFrac - forceFrac - fullFrac); // pistol + unknown → 1.0
 
     // 只对击杀项（kprTerm + impactTerm）施加乘子，ADR/KAST 不调整
@@ -69,11 +62,10 @@ export function computeRR(
   }
 
   // ── Layer 2：Round Swing（当前 coef=0，透明透传）──────────────────────
-  const rrSwing =
-    layer2.roundSwingCoef * (ind.roundSwingPerKill ?? 0) * ind.kpr;
+  const rrSwing = layer2.roundSwingCoef * (ind.roundSwingPerKill ?? 0) * ind.kpr;
 
   const rrRaw = rrBase + rrSwing;
-  const rr    = Math.max(clamp.min, Math.min(clamp.max, rrRaw));
+  const rr = Math.max(clamp.min, Math.min(clamp.max, rrRaw));
 
   return {
     rr,
@@ -100,8 +92,12 @@ function zeroResult(version: string): RRResult {
     rrSwing: 0,
     weightsVersion: version,
     breakdown: {
-      kastTerm: 0, kprTerm: 0, dprTerm: 0,
-      impactTerm: 0, adrTerm: 0, intercept: 0,
+      kastTerm: 0,
+      kprTerm: 0,
+      dprTerm: 0,
+      impactTerm: 0,
+      adrTerm: 0,
+      intercept: 0,
     },
   };
 }

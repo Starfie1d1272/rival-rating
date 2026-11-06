@@ -42,7 +42,7 @@ This file provides guidance to Codex when working in this repository.
 
 ## 6. Gotchas
 
-- `pnpm lint` 不存在；验证优先用 `pnpm typecheck` 和 `pnpm test`。
+- `pnpm format:check` 与 `pnpm lint` 覆盖 TypeScript；`ruff format --check tools/offline_rating/tests` 与 `ruff check tools/offline_rating/tests` 覆盖 Python 测试。离线实现文件绑定于 `parameters/integrity-v1.json`，不能为了格式化重写或静默更新冻结清单。
 - HLTV 2.0 baseline 权重在 `src/weights/hltv-2-baseline-v1.json`，RR 主权重在 `src/weights/rr-six-accounts-v1.json`。
 - RR 主实现是 `src/rr/models/six-accounts.ts`；不要恢复旧 `value-accounts-v2-lite` 命名。
 - `package.json` exports 直接指向 `src/index.ts` 和 `src/weights/*`；改导出面时要同步检查消费方。

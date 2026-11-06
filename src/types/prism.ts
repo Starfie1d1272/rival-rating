@@ -8,36 +8,36 @@
  *  - 冷启动收缩：z' = z · n/(n+k)，仅作用于画像层，不碰 RR 标量
  *  - 所有系数外置，带版本号，零重构可换系数
  */
-import type { RRIndicators } from "./indicators.js";
+import type { RRIndicators } from './indicators.js';
 
 // ─── 八维枚举 ─────────────────────────────────────────────────────────────
 
 export const PRISM_AXES = [
-  "firepower",  // 火力：纯输出，不看生存
-  "opening",    // 首杀：首杀对枪赢下来（成功侧）
-  "clutch",     // 残局：1vX 残局，time-alive 型
-  "sniping",    // 狙击：AWP 风格标签（近乎纯风格）
-  "survival",   // 生存：活下来/低死亡率（近乎纯水平）
-  "utility",    // 道具：投掷物贡献
-  "trading",    // 补枪：补枪、护队友
-  "entry",      // 突破：开路尖刀，第一个趟（与 opening 互补）
+  'firepower', // 火力：纯输出，不看生存
+  'opening', // 首杀：首杀对枪赢下来（成功侧）
+  'clutch', // 残局：1vX 残局，time-alive 型
+  'sniping', // 狙击：AWP 风格标签（近乎纯风格）
+  'survival', // 生存：活下来/低死亡率（近乎纯水平）
+  'utility', // 道具：投掷物贡献
+  'trading', // 补枪：补枪、护队友
+  'entry', // 突破：开路尖刀，第一个趟（与 opening 互补）
 ] as const;
 
-export type PrismAxisKey = typeof PRISM_AXES[number];
+export type PrismAxisKey = (typeof PRISM_AXES)[number];
 
 /**
  * 八角形布局顺序（顺时针，用于前端渲染）
  * 对立角色放对角：opening ↔ clutch（早期 vs 后期），entry ↔ survival（送死 vs 保命）
  */
 export const PRISM_AXIS_ORDER: PrismAxisKey[] = [
-  "firepower",
-  "opening",
-  "clutch",
-  "sniping",
-  "survival",
-  "utility",
-  "trading",
-  "entry",
+  'firepower',
+  'opening',
+  'clutch',
+  'sniping',
+  'survival',
+  'utility',
+  'trading',
+  'entry',
 ];
 
 // ─── 权重 schema ──────────────────────────────────────────────────────────
@@ -94,7 +94,7 @@ export interface PrismWeights {
    * "rr_percentile"：整体着色 = RR 百分位
    * "axis_efficiency"：每根轴用各自效率百分位做局部明暗（信息更丰富但复杂）
    */
-  colorSource: "rr_percentile" | "axis_efficiency";
+  colorSource: 'rr_percentile' | 'axis_efficiency';
   axes: Record<PrismAxisKey, PrismAxisConfig>;
 }
 
