@@ -1,11 +1,11 @@
-import { describe, it, expect } from "vitest";
-import { computeRR, computeLeagueMean } from "./compute.js";
-import type { RRIndicators } from "../types/indicators.js";
-import type { RRWeights } from "../types/rr.js";
+import { describe, it, expect } from 'vitest';
+import { computeRR, computeLeagueMean } from './compute.js';
+import type { RRIndicators } from '../types/indicators.js';
+import type { RRWeights } from '../types/rr.js';
 
 // ── 最小合法 RRWeights ────────────────────────────────────────────────────
 const weights: RRWeights = {
-  version: "rr-test",
+  version: 'rr-test',
   base: {
     kastCoef: 0.0073,
     kprCoef: 0.3591,
@@ -25,14 +25,14 @@ const weights: RRWeights = {
   },
   layer2: { roundSwingCoef: 0.0 },
   clamp: { min: 0.1, max: 3.0 },
-  anchor: { mode: "league_mean" },
+  anchor: { mode: 'league_mean' },
 };
 
 // ── 基础选手数据（联赛平均水平，期望 RR ≈ 1.0）───────────────────────────
 function makeAvgPlayer(overrides: Partial<RRIndicators> = {}): RRIndicators {
   const totalRounds = 24;
   return {
-    steamId64: "test",
+    steamId64: 'test',
     totalRounds,
     kills: 17,
     deaths: 16,
@@ -103,21 +103,21 @@ function makeAvgPlayer(overrides: Partial<RRIndicators> = {}): RRIndicators {
   };
 }
 
-describe("computeRR", () => {
-  it("联赛平均水平选手 RR 应在 0.9–1.1 之间", () => {
+describe('computeRR', () => {
+  it('联赛平均水平选手 RR 应在 0.9–1.1 之间', () => {
     const result = computeRR(makeAvgPlayer(), weights);
     // 17K/16D (正 K/D) 的选手略高于联赛均值，1.0–1.15 是合理范围
     expect(result.rr).toBeGreaterThan(0.9);
     expect(result.rr).toBeLessThan(1.15);
-    expect(result.weightsVersion).toBe("rr-test");
+    expect(result.weightsVersion).toBe('rr-test');
   });
 
-  it("totalRounds=0 时返回兜底值 1.0", () => {
+  it('totalRounds=0 时返回兜底值 1.0', () => {
     const result = computeRR(makeAvgPlayer({ totalRounds: 0 }), weights);
     expect(result.rr).toBe(1.0);
   });
 
-  it("高 frag 选手 RR > 1.0", () => {
+  it('高 frag 选手 RR > 1.0', () => {
     const result = computeRR(
       makeAvgPlayer({
         kills: 28,
@@ -132,20 +132,19 @@ describe("computeRR", () => {
     expect(result.rr).toBeGreaterThan(1.0);
   });
 
-  it("breakdown 各项求和约等于 rrBase", () => {
+  it('breakdown 各项求和约等于 rrBase', () => {
     const result = computeRR(makeAvgPlayer(), weights);
-    const { kastTerm, kprTerm, dprTerm, impactTerm, adrTerm, intercept } =
-      result.breakdown;
+    const { kastTerm, kprTerm, dprTerm, impactTerm, adrTerm, intercept } = result.breakdown;
     const summed = kastTerm + kprTerm + dprTerm + impactTerm + adrTerm + intercept;
     expect(Math.abs(summed - result.rrBase)).toBeLessThan(0.01);
   });
 
-  it("Layer 2 关闭时 rrSwing 为 0", () => {
+  it('Layer 2 关闭时 rrSwing 为 0', () => {
     const result = computeRR(makeAvgPlayer(), weights);
     expect(result.rrSwing).toBe(0);
   });
 
-  it("clamp 生效：极差选手不低于 0.1", () => {
+  it('clamp 生效：极差选手不低于 0.1', () => {
     const result = computeRR(
       makeAvgPlayer({ kills: 0, kpr: 0, adr: 0, kast: 0, deaths: 24, dpr: 1 }),
       weights,
@@ -154,20 +153,24 @@ describe("computeRR", () => {
   });
 });
 
-describe("computeLeagueMean", () => {
-  it("空数组返回 1.0", () => {
+describe('computeLeagueMean', () => {
+  it('空数组返回 1.0', () => {
     expect(computeLeagueMean([])).toBe(1.0);
   });
 
-  it("均值计算正确", () => {
+  it('均值计算正确', () => {
     const results = [1.0, 1.2, 0.8].map((rr) => ({
       rr,
       rrBase: rr,
       rrSwing: 0,
-      weightsVersion: "test",
+      weightsVersion: 'test',
       breakdown: {
-        kastTerm: 0, kprTerm: 0, dprTerm: 0,
-        impactTerm: 0, adrTerm: 0, intercept: 0,
+        kastTerm: 0,
+        kprTerm: 0,
+        dprTerm: 0,
+        impactTerm: 0,
+        adrTerm: 0,
+        intercept: 0,
       },
     }));
     expect(computeLeagueMean(results)).toBeCloseTo(1.0);

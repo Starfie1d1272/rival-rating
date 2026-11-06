@@ -1,14 +1,17 @@
-import { describe, it, expect } from "vitest";
-import { computeFrozenProBaselineRR } from "./frozen-pro-baseline.js";
-import type { ProBaselineConfig } from "./frozen-pro-baseline.js";
-import { computeRRSixAccounts } from "./six-accounts.js";
-import { RR_ACCOUNTS } from "../../types/accounts.js";
-import type { RRAccountKey, RRSixAccountWeights, RRSignals } from "../../types/accounts.js";
-import weightsJson from "../../weights/rr-six-accounts-v1.json" with { type: "json" };
+import { describe, it, expect } from 'vitest';
+import { computeFrozenProBaselineRR } from './frozen-pro-baseline.js';
+import type { ProBaselineConfig } from './frozen-pro-baseline.js';
+import { computeRRSixAccounts } from './six-accounts.js';
+import { RR_ACCOUNTS } from '../../types/accounts.js';
+import type { RRAccountKey, RRSixAccountWeights, RRSignals } from '../../types/accounts.js';
+import weightsJson from '../../weights/rr-six-accounts-v1.json' with { type: 'json' };
 
 const weights = weightsJson as unknown as RRSixAccountWeights;
 
-function makePlayer(id: string, o: { kills?: number; deaths?: number; damage?: number } = {}): RRSignals {
+function makePlayer(
+  id: string,
+  o: { kills?: number; deaths?: number; damage?: number } = {},
+): RRSignals {
   const rounds = 200;
   return {
     steamId64: id,
@@ -66,12 +69,12 @@ function makePlayer(id: string, o: { kills?: number; deaths?: number; damage?: n
 function baselineCenteredOn(p: RRSignals, opts: { scale?: number } = {}): ProBaselineConfig {
   const w = weights.accountWeights;
   const res = computeRRSixAccounts(p, weights);
-  const accounts = {} as ProBaselineConfig["accounts"];
+  const accounts = {} as ProBaselineConfig['accounts'];
   for (const k of RR_ACCOUNTS as readonly RRAccountKey[]) {
     accounts[k] = { mean: w[k] !== 0 ? res.accounts[k] / w[k] : 0, std: 0.1, slope: 0 };
   }
   return {
-    version: "test-baseline",
+    version: 'test-baseline',
     accountWeights: w,
     clamp: weights.clamp,
     scale: opts.scale ?? 0.2,
@@ -80,9 +83,9 @@ function baselineCenteredOn(p: RRSignals, opts: { scale?: number } = {}): ProBas
   };
 }
 
-describe("computeFrozenProBaselineRR", () => {
-  it("scores a player exactly at baseline mean to the anchor (1.0)", () => {
-    const ref = makePlayer("ref");
+describe('computeFrozenProBaselineRR', () => {
+  it('scores a player exactly at baseline mean to the anchor (1.0)', () => {
+    const ref = makePlayer('ref');
     const baseline = baselineCenteredOn(ref);
     const out = computeFrozenProBaselineRR(ref, weights, baseline);
     expect(out.rr).toBeCloseTo(1.0, 6);
@@ -90,42 +93,42 @@ describe("computeFrozenProBaselineRR", () => {
   });
 
   it("is portable: a single player's RR depends only on signal+baseline, not on any cohort", () => {
-    const ref = makePlayer("ref");
+    const ref = makePlayer('ref');
     const baseline = baselineCenteredOn(ref);
-    const target = makePlayer("t", { kills: 170, damage: 19000 });
+    const target = makePlayer('t', { kills: 170, damage: 19000 });
     const a = computeFrozenProBaselineRR(target, weights, baseline);
     const b = computeFrozenProBaselineRR(target, weights, baseline);
     expect(a.rr).toBe(b.rr); // 确定性，无 cohort 依赖
   });
 
-  it("rates above the anchor when combat exceeds the baseline mean", () => {
-    const ref = makePlayer("ref");
+  it('rates above the anchor when combat exceeds the baseline mean', () => {
+    const ref = makePlayer('ref');
     const baseline = baselineCenteredOn(ref);
-    const strong = makePlayer("strong", { kills: 200, damage: 24000 });
+    const strong = makePlayer('strong', { kills: 200, damage: 24000 });
     const out = computeFrozenProBaselineRR(strong, weights, baseline);
     expect(out.rr).toBeGreaterThan(1.0);
   });
 
-  it("respects the clamp floor for far-below-baseline play", () => {
-    const ref = makePlayer("ref", { kills: 200, damage: 24000 });
+  it('respects the clamp floor for far-below-baseline play', () => {
+    const ref = makePlayer('ref', { kills: 200, damage: 24000 });
     const baseline = baselineCenteredOn(ref, { scale: 5 }); // 放大离散度，逼出下限
-    const weak = makePlayer("weak", { kills: 30, deaths: 170, damage: 4000 });
+    const weak = makePlayer('weak', { kills: 30, deaths: 170, damage: 4000 });
     const out = computeFrozenProBaselineRR(weak, weights, baseline);
     expect(out.rr).toBeGreaterThanOrEqual(weights.clamp.min);
   });
 
-  it("respects the clamp ceiling for far-above-baseline play", () => {
-    const ref = makePlayer("ref", { kills: 30, deaths: 170, damage: 4000 });
+  it('respects the clamp ceiling for far-above-baseline play', () => {
+    const ref = makePlayer('ref', { kills: 30, deaths: 170, damage: 4000 });
     const baseline = baselineCenteredOn(ref, { scale: 10 });
-    const strong = makePlayer("strong", { kills: 260, deaths: 60, damage: 30000 });
+    const strong = makePlayer('strong', { kills: 260, deaths: 60, damage: 30000 });
     const out = computeFrozenProBaselineRR(strong, weights, baseline);
     expect(out.rr).toBeLessThanOrEqual(weights.clamp.max);
   });
 
-  it("breakdown sums to (rr - anchor)", () => {
-    const ref = makePlayer("ref");
+  it('breakdown sums to (rr - anchor)', () => {
+    const ref = makePlayer('ref');
     const baseline = baselineCenteredOn(ref);
-    const target = makePlayer("t", { kills: 160, damage: 18000 });
+    const target = makePlayer('t', { kills: 160, damage: 18000 });
     const out = computeFrozenProBaselineRR(target, weights, baseline);
     const sum = (Object.values(out.accounts) as number[]).reduce((s, v) => s + v, 0);
     expect(sum).toBeCloseTo(out.rr - baseline.anchor, 6);

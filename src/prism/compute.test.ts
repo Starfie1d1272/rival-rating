@@ -1,8 +1,8 @@
-import { describe, expect, it } from "vitest";
-import { computePrism } from "./compute.js";
-import type { RRIndicators } from "../types/indicators.js";
-import type { PrismWeights } from "../types/prism.js";
-import weightsJson from "../weights/prism-v1.json" with { type: "json" };
+import { describe, expect, it } from 'vitest';
+import { computePrism } from './compute.js';
+import type { RRIndicators } from '../types/indicators.js';
+import type { PrismWeights } from '../types/prism.js';
+import weightsJson from '../weights/prism-v1.json' with { type: 'json' };
 
 const weights = weightsJson as unknown as PrismWeights;
 
@@ -78,24 +78,27 @@ function makeIndicators(id: string): RRIndicators {
   };
 }
 
-describe("computePrism", () => {
-  it("marks an axis as no-signal and does not create a fake percentile", () => {
+describe('computePrism', () => {
+  it('marks an axis as no-signal and does not create a fake percentile', () => {
     const custom: PrismWeights = {
       ...weights,
       axes: {
         ...weights.axes,
         utility: {
           alpha: 0.5,
-          involvement: [{ signal: "effectiveEnemyFlashSecondsPerRound", weight: 1 }],
-          efficiency: [{ signal: "smokeProtectedCrossingsPerRound", weight: 1 }],
+          involvement: [{ signal: 'effectiveEnemyFlashSecondsPerRound', weight: 1 }],
+          efficiency: [{ signal: 'smokeProtectedCrossingsPerRound', weight: 1 }],
         },
       },
     };
 
-    const [out] = computePrism([
-      { indicators: makeIndicators("a"), mapCount: 10, rrPercentile: 50 },
-      { indicators: makeIndicators("b"), mapCount: 10, rrPercentile: 50 },
-    ], custom);
+    const [out] = computePrism(
+      [
+        { indicators: makeIndicators('a'), mapCount: 10, rrPercentile: 50 },
+        { indicators: makeIndicators('b'), mapCount: 10, rrPercentile: 50 },
+      ],
+      custom,
+    );
 
     expect(out!.axes.utility.hasSignal).toBe(false);
     expect(out!.axes.utility.availableSignalWeight).toBe(0);

@@ -6,12 +6,12 @@
  */
 
 export const RR_ACCOUNTS = [
-  "combat",
-  "trade",
-  "mapControl",
-  "utility",
-  "clutch",
-  "objective",
+  'combat',
+  'trade',
+  'mapControl',
+  'utility',
+  'clutch',
+  'objective',
 ] as const;
 export type RRAccountKey = (typeof RR_ACCOUNTS)[number];
 
@@ -176,7 +176,7 @@ export interface RRSixAccountWeights {
   clutch: ClutchWeights;
   objective: ObjectiveWeights;
   clamp: { min: number; max: number };
-  anchor: { mode: "league_mean" | "frozen_pro_baseline"; note?: string };
+  anchor: { mode: 'league_mean' | 'frozen_pro_baseline'; note?: string };
 }
 
 export interface RRSixAccountResult {
@@ -191,6 +191,6 @@ export interface RRSixAccountResult {
 export interface RRModel<I, W, R> {
   id: string;
   version: string;
-  inputKind: "rr-indicators" | "rr-signals";
+  inputKind: 'rr-indicators' | 'rr-signals';
   compute(input: I, weights: W): R;
 }

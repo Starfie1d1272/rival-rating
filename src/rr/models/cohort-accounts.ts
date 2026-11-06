@@ -21,9 +21,9 @@
  * 纯函数，无副作用。
  */
 
-import { computeRRSixAccounts } from "./six-accounts.js";
-import { RR_ACCOUNTS } from "../../types/accounts.js";
-import type { RRAccountKey, RRSixAccountWeights, RRSignals } from "../../types/accounts.js";
+import { computeRRSixAccounts } from './six-accounts.js';
+import { RR_ACCOUNTS } from '../../types/accounts.js';
+import type { RRAccountKey, RRSixAccountWeights, RRSignals } from '../../types/accounts.js';
 
 export interface CohortAccountResult {
   steamId64: string;
@@ -60,13 +60,15 @@ export function computeCohortAccountsRR(
   const zc = z.combat;
   const used = { ...z } as Record<RRAccountKey, number[]>;
   for (const k of RR_ACCOUNTS) {
-    if (k === "combat") continue;
+    if (k === 'combat') continue;
     const slope = zc.reduce((acc, v, i) => acc + v * (z[k][i] ?? 0), 0) / n; // 两者已标准化 → 点积/n = 相关
     used[k] = standardize(z[k].map((v, i) => v - slope * (zc[i] ?? 0)));
   }
 
   // 3. composite + scale + anchor
-  const composite = signals.map((_, i) => RR_ACCOUNTS.reduce((s, k) => s + w[k] * (used[k][i] ?? 0), 0));
+  const composite = signals.map((_, i) =>
+    RR_ACCOUNTS.reduce((s, k) => s + w[k] * (used[k][i] ?? 0), 0),
+  );
   const targetStd = opts.targetStd ?? 0.2;
   const compStd = pstd(composite);
   const scale = compStd > 1e-9 ? targetStd / compStd : 0;

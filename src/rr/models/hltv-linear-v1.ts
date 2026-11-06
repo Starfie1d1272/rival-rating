@@ -5,14 +5,14 @@
  * 作为 v2 价值账户模型的 baseline / 对照组保留，不删除。
  */
 
-import type { RRIndicators } from "../../types/indicators.js";
-import type { RRWeights, RRResult } from "../../types/rr.js";
-import type { RRModel } from "../../types/accounts.js";
-import { computeRR } from "../compute.js";
+import type { RRIndicators } from '../../types/indicators.js';
+import type { RRWeights, RRResult } from '../../types/rr.js';
+import type { RRModel } from '../../types/accounts.js';
+import { computeRR } from '../compute.js';
 
 export const hltvLinearV1Model: RRModel<RRIndicators, RRWeights, RRResult> = {
-  id: "hltv-linear-v1",
-  version: "hltv-2-baseline-1.0",
-  inputKind: "rr-indicators",
+  id: 'hltv-linear-v1',
+  version: 'hltv-2-baseline-1.0',
+  inputKind: 'rr-indicators',
   compute: computeRR,
 };

@@ -4,8 +4,8 @@
  * 按 SignalConfig[] 加权求和，处理 null 字段和 invert 标志。
  */
 
-import type { RRIndicators } from "../types/indicators.js";
-import type { SignalConfig } from "../types/prism.js";
+import type { RRIndicators } from '../types/indicators.js';
+import type { SignalConfig } from '../types/prism.js';
 
 export interface AxisScoreDetails {
   score: number;
@@ -20,10 +20,7 @@ export interface AxisScoreDetails {
  * - invert=true 时用 (1 - value) 反转（适用于 dpr、firstDeathRate 等"低更好"信号）
  *   注意：invert 假设信号已归一化到 [0, 1]；若未归一化请在 indicators 里预处理
  */
-export function extractAxisScore(
-  ind: RRIndicators,
-  signals: SignalConfig[],
-): number {
+export function extractAxisScore(ind: RRIndicators, signals: SignalConfig[]): number {
   return extractAxisScoreDetails(ind, signals).score;
 }
 
@@ -42,7 +39,7 @@ export function extractAxisScoreDetails(
     // null / undefined → 跳过（不纳入加权分母，信号缺失时不拉低分数）
     if (raw === null || raw === undefined) continue;
 
-    const value = typeof raw === "number" ? raw : 0;
+    const value = typeof raw === 'number' ? raw : 0;
     const adjusted = cfg.invert ? 1 - value : value;
 
     score += adjusted * cfg.weight;

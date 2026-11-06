@@ -66,7 +66,7 @@ export interface RRAnchor {
    * "league_mean"：1.00 = 本赛季联赛均值
    * "pro_mean"：1.00 = 职业选手均值（更硬核，分数整体偏低）
    */
-  mode: "league_mean" | "pro_mean";
+  mode: 'league_mean' | 'pro_mean';
   note?: string;
 }
 
