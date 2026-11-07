@@ -2,3 +2,7 @@ allowBuilds:
   esbuild: true
 frozenLockfile: true
 verifyDepsBeforeRun: error
+# Keep affected transitive development dependencies on patched releases.
+overrides:
+  launch-editor@<2.14.2: 2.14.2
+  source-map-js@>=1.0.0 <1.2.2: 1.2.2
